@@ -1,43 +1,20 @@
-const { Model, INTEGER, STRING } = require('sequelize');
-const { User } = require('.');
-
-class User extends Model {
-  id!;
-  username!;
-  role!;
-  email!;
-  password!;
-}
-User.init(
-  {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: INTEGER,
+const User = (sequelize, DataTypes) => {
+  const User = sequelize.define(
+    'User',
+    {
+      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      role: DataTypes.STRING,
     },
-    username: {
-      allowNull: false,
-      type: STRING,
-    },
-    role: {
-      allowNull: false,
-      type: STRING,
-    },
-    email: {
-      allowNull: false,
-      type: STRING,
-    },
-    password: {
-      allowNull: false,
-      type: STRING,
-    },
-  },
-  {
-    sequelize: db,
-    modelName: 'users',
-    timestamps: false,
-  },
-);
+    {
+      timestamps: false,
+      modelName: 'User',
+      tableName: 'users',
+    }
+  );
+  return User;
+};
 
 module.exports = User;
