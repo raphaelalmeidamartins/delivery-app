@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-// import Button from '../components/Button';
+import { useNavigate } from 'react-router-dom';
+import Button from '../components/Button';
+// import handleValidation from '../helpers/handleValidation';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -18,18 +19,24 @@ function Login() {
     }
   };
 
-  function handleChange({ target: { name, value } }) {
+  const handleChange = ({ target: { name, value } }) => {
     const loginValues = {
       email: () => setEmail(value),
       password: () => setPassword(value),
     };
     loginValues[name]();
     handleValidation();
-  }
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate('/register', { replace: true });
+  };
 
   return (
-    <div>
-      <p>Login</p>
+    <form onSubmit={ handleSubmit }>
+      <h1>Login</h1>
       <input
         type="email"
         name="email"
@@ -46,23 +53,18 @@ function Login() {
         onChange={ handleChange }
         data-test-id="common_login__input-password"
       />
-      <button
-        type="button"
+      <Button
+        title="LOGIN"
         disabled={ disabledButton }
         data-test-id="common_login__button-login"
-      >
-        LOGIN
-      </button>
-      <Link to="/register">
-        <button
-          type="button"
-          data-test-id="common_login__button-register"
-        >
-          Ainda não tenho conta
-        </button>
-      </Link>
+      />
+      <Button
+        onSubmit={ handleSubmit }
+        title="Ainda não tenho conta"
+        data-test-id="common_login__button-register"
+      />
 
-    </div>
+    </form>
   );
 }
 

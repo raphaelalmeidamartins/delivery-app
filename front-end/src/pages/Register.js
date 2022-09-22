@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Button from '../components/Button';
 
 function Register() {
   const [name, setName] = useState('');
@@ -19,7 +20,7 @@ function Register() {
   };
 
   // eslint-disable-next-line no-shadow
-  function handleChange({ target: { name, value } }) {
+  const handleChange = ({ target: { name, value } }) => {
     const registerValues = {
       name: () => setName(value),
       email: () => setEmail(value),
@@ -27,11 +28,11 @@ function Register() {
     };
     registerValues[name]();
     handleValidation();
-  }
+  };
 
   return (
-    <div>
-      <p>Register</p>
+    <form>
+      <h1>Register</h1>
       <input
         type="text"
         name="name"
@@ -56,14 +57,12 @@ function Register() {
         onChange={ handleChange }
         data-test-id="common_register__input-password"
       />
-      <button
-        type="button"
+      <Button
+        title="CADASTRAR"
         data-test-id="common_register__button-register"
         disabled={ disabledButton }
-      >
-        CADASTRAR
-      </button>
-    </div>
+      />
+    </form>
   );
 }
 
