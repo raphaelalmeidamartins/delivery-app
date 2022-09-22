@@ -7,4 +7,6 @@ router.get('/', userController.findAll);
 
 router.post('/', userController.create);
 
+router.delete('/', userController.deleteUser);
+
 module.exports = router;
