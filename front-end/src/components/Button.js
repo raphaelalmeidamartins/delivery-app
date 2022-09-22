@@ -1,11 +1,18 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
-function Button() {
+function Button({ styles, onClick, title }) {
   return (
-    <button type="button"> LOGIN
-      {/* Utilizar as props para fazer as variações do componente conforme está no figma */}
+    <button type="button" className={ styles } onClick={ onClick }>
+      { title }
     </button>
   );
 }
+
+Button.propTypes = {
+  styles: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 export default Button;
