@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from '../components/Button';
 
 function Register() {
-  const [name, setName] = useState('');
+  const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disabledButton, setDissabledButton] = useState(true);
@@ -12,17 +12,16 @@ function Register() {
     const regexCode = /\S+@\S+\.\S+/;
     const minPassword = 6;
     const validMail = regexCode.test(email);
-    if (validMail && password.length >= minPassword && name.length >= completedName) {
+    if (validMail && password.length >= minPassword && user.length >= completedName) {
       setDissabledButton(false);
     } else {
       setDissabledButton(true);
     }
   };
 
-  // eslint-disable-next-line no-shadow
   const handleChange = ({ target: { name, value } }) => {
     const registerValues = {
-      name: () => setName(value),
+      user: () => setUser(value),
       email: () => setEmail(value),
       password: () => setPassword(value),
     };
@@ -37,7 +36,7 @@ function Register() {
         type="text"
         name="name"
         placeholder="Seu Nome"
-        value={ name }
+        value={ user }
         onChange={ handleChange }
         data-test-id="common_register__input-name"
       />
