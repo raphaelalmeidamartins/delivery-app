@@ -4,4 +4,6 @@ const create = async (data) => User.create(data);
 
 const findAll = async () => User.findAll();
 
-module.exports = { create, findAll };
+const deleteUser = async () => User.delete();
+
+module.exports = { create, findAll, deleteUser };
