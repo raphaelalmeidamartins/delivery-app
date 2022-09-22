@@ -2,13 +2,13 @@ const Sale = (sequelize, DataTypes) => {
   const Sale = sequelize.define(
     'Sale',
     {
-      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      id: { type: DataTypes.INTEGER, primaryKey: true },
       userId: DataTypes.INTEGER,
       sellerId: DataTypes.INTEGER,
       totalPrice: DataTypes.DECIMAL(9, 2),
       deliveryAddress: DataTypes.STRING,
       deliveryNumber: DataTypes.STRING,
-      saleDate: DataTypes.DATE,
+      saleDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW},
       status: DataTypes.STRING,
     },
     {
@@ -19,10 +19,11 @@ const Sale = (sequelize, DataTypes) => {
   );
 
   Sale.associate = (models) => {
-    Sale.belongsTo(models.User, { foreignKey: 'userId', as: 'users' });
-    Sale.belongsTo(models.User, { foreignKey: 'sellerId', as: 'sellers' });
-    Sale.belongsToMany(models.Product, { through: models.SalesProducts, foreignKey: 'saleId', as: 'products' });
+    Sale.belongsTo(models.User, { foreignKey: 'id', as: 'userId' });
+    Sale.belongsTo(models.User, { foreignKey: 'id', as: 'sellerId' });
   };
+
+  return Sale;
 };
 
 module.exports = Sale;
