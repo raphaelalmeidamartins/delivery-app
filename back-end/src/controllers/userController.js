@@ -10,4 +10,9 @@ const findAll = async (req, res) => {
   return res.status(200).json(allUsers);
 };
 
-module.exports = { create, findAll };
+const deleteUser = async (req, res) => {
+  await userService.deleteUser(req.body);
+  return res.status(204).end();
+};
+
+module.exports = { create, findAll, deleteUser };
