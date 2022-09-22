@@ -8,13 +8,9 @@ const login = async (data) => {
   if (!user) unauthorizedError('Email or password invalid!');
   const passwordIsTrue = password === user.password;
   if (!passwordIsTrue) unauthorizedError('Email or password invalid!');
-  
+
   const token = createToken({ email, role: user.role, name: user.name });
   return { email, role: user.role, name: user.name, token };
 };
 
 module.exports = { login };
-
-const create = async (data) => User.create(data);
-
-module.exports = { create };
