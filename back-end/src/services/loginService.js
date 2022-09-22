@@ -14,3 +14,7 @@ const login = async (data) => {
 };
 
 module.exports = { login };
+
+const create = async (data) => User.create(data);
+
+module.exports = { create };
