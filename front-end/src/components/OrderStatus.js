@@ -13,6 +13,7 @@ function OrderStatus({ status, testId }) {
 
   return (
     <span
+      style={ { border: '1px solid black' } }
       data-testid={ `${userData.role}_orders__element-delivery-status-${testId}` }
     >
       {displayText[status]}
