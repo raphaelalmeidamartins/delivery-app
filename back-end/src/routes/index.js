@@ -6,8 +6,7 @@ const saleRouter = require('./saleRoutes');
 const router = Router();
 
 router.use('/login', loginRouter);
-router.use('/', saleRouter);
-
+router.use('/sale', saleRouter);
 router.use('/users', userRouter);
 
 module.exports = router;

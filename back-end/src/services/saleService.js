@@ -1,32 +1,61 @@
-const db = require('../database/models');
+const { Sale, User, Product } = require('../database/models');
 
-const saleService = {
-  create: async (sale) => {
-    const { userId, sellerId, totalPrice,
-      deliveryAddress, deliveryNumber, status/* , products */ } = sale;
-
-    const saleCreated = await db.Sale.create({
+  const create = async (body) => {
+    const { userId, sellerId, products } = body;
+    // const totalPrice = findProducts.reduce((acc, product) => acc + product.price * product.quantity,
+    //  0);
+    const sale = await Sale.create({
       userId,
       sellerId,
-      totalPrice,
-      deliveryAddress,
-      deliveryNumber,
-      status,
-/*       products, */
+      deliveryAddress: body.deliveryAddress,
+      deliveryNumber: body.deliveryNumber,
+      status: 'pending',
+      products,
+      // totalPrice,
     });
-    return saleCreated;
-  },
+    return sale;
+  };
 
-  list: async () => {
-    const sales = await db.Sale.findAll({
+  const list = async () => {
+    const sales = await Sale.findAll({
       include: [
-        { model: db.User, as: 'user' },
-        { model: db.User, as: 'seller' },
-        { model: db.Product, as: 'products' },
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: User, as: 'seller', attributes: { exclude: ['password'] } },
+        { model: Product, as: 'products' },
       ],
     });
     return sales;
-  },
-};
+  };
 
-module.exports = saleService;
+  const findById = async (id) => {
+    const sale = await Sale.findByPk(id, {
+      include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: User, as: 'seller', attributes: { exclude: ['password'] } },
+        { model: Product, as: 'products' },
+      ],
+    });
+    return sale;
+  };
+
+  const update = async (id, body) => {
+    const saleUpdated = await Sale.update(body, {
+      where: { id },
+    });
+    return saleUpdated;
+  };
+
+  const deleteSale = async (id) => {
+    const saleDeleted = await Sale.delete({
+      where: { id },
+    });
+    return saleDeleted;
+  };
+
+  module.exports = {
+    create,
+    list,
+    findById,
+    update,
+    deleteSale,
+  };
