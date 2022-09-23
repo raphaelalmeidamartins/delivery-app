@@ -1,61 +1,64 @@
-const { Sale, User, Product } = require('../database/models');
+const { Sale, User, Product, SalesProducts } = require('../database/models');
+const productService = require('./productService');
 
   const create = async (body) => {
-    const { userId, sellerId, products } = body;
-    // const totalPrice = findProducts.reduce((acc, product) => acc + product.price * product.quantity,
-    //  0);
-    const sale = await Sale.create({
+    const { userId, sellerId, deliveryAddress, deliveryNumber, products } = body;
+    const totalPrice = await productService.totalPrice(products)
+    const createdSale = await Sale.create({
       userId,
       sellerId,
-      deliveryAddress: body.deliveryAddress,
-      deliveryNumber: body.deliveryNumber,
+      deliveryAddress,
+      deliveryNumber,
       status: 'pending',
-      products,
-      // totalPrice,
+      totalPrice,
     });
-    return sale;
+    const registeredSale = products.map(async (item) => {
+      await SalesProducts.create({productId: item.id, quantity: item.quantity, saleId: sale.id})
+    })
+    await Promise.all(registeredSale);
+    return createdSale;
   };
 
   const list = async () => {
-    const sales = await Sale.findAll({
+    const listedSales = await Sale.findAll({
       include: [
         { model: User, as: 'user', attributes: { exclude: ['password'] } },
         { model: User, as: 'seller', attributes: { exclude: ['password'] } },
         { model: Product, as: 'products' },
       ],
     });
-    return sales;
+    return listedSales;
   };
 
-  const findById = async (id) => {
-    const sale = await Sale.findByPk(id, {
+  const find = async (id) => {
+    const foundSale = await Sale.findByPk(id, {
       include: [
         { model: User, as: 'user', attributes: { exclude: ['password'] } },
         { model: User, as: 'seller', attributes: { exclude: ['password'] } },
         { model: Product, as: 'products' },
       ],
     });
-    return sale;
+    return foundSale;
   };
 
   const update = async (id, body) => {
-    const saleUpdated = await Sale.update(body, {
+    const updatedSale = await Sale.update(body, {
       where: { id },
     });
-    return saleUpdated;
+    return updatedSale;
   };
 
   const deleteSale = async (id) => {
-    const saleDeleted = await Sale.delete({
+    const deletedSale = await Sale.delete({
       where: { id },
     });
-    return saleDeleted;
+    return deletedSale;
   };
 
   module.exports = {
     create,
     list,
-    findById,
+    find,
     update,
     deleteSale,
   };
