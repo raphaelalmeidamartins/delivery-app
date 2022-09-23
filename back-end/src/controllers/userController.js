@@ -6,12 +6,12 @@ const create = async (req, res) => {
 };
 
 const findAll = async (req, res) => {
-  const allUsers = await userService.findAll(req.body);
+  const allUsers = await userService.findAll(req.headers);
   return res.status(200).json(allUsers);
 };
 
 const deleteUser = async (req, res) => {
-  await userService.deleteUser(req.body);
+  await userService.deleteUser(req.params.id, req.headers);
   return res.status(204).end();
 };
 
