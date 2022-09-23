@@ -40,6 +40,15 @@ const findAll = async (headers) => {
   return users;
 };
 
-const deleteUser = async () => User.delete();
+const deleteUser = async (id, headers) => {
+  const { authorization } = headers;
+  const tokenIsValid = verifyToken(authorization);
+
+  if (tokenIsValid.role !== 'admin') {
+    unauthorizedError(unauthorizedMessage);
+  }
+
+  await User.destroy({ where: { id } });
+};
 
 module.exports = { create, findAll, deleteUser };
