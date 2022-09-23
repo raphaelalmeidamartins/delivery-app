@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import handleUserValidation from '../helpers/handleUserValidation';
+import service from '../service';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -26,11 +27,17 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // implementar a lógica da API aqui
-    setUserData({ role: 'customer', username: 'Raphael' });
-    navigate('/customer/products', { replace: true });
+    if (!handleUserValidation(email, password)) {
+      const userData = await service.post.login({
+        email,
+        password,
+      });
+      setUserData(userData);
+      navigate('/customer/products', { replace: true });
+    }
   };
 
   const handleRegister = () => {
