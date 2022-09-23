@@ -3,7 +3,7 @@ const productService = require('./productService');
 
   const create = async (body) => {
     const { userId, sellerId, deliveryAddress, deliveryNumber, products } = body;
-    const totalPrice = await productService.totalPrice(products)
+    const totalPrice = await productService.totalPriceCalc(products);
     const createdSale = await Sale.create({
       userId,
       sellerId,
@@ -13,8 +13,8 @@ const productService = require('./productService');
       totalPrice,
     });
     const registeredSale = products.map(async (item) => {
-      await SalesProducts.create({productId: item.id, quantity: item.quantity, saleId: sale.id})
-    })
+      await SalesProducts.create({ productId: item.id, quantity: item.quantity, saleId: Sale.id });
+    });
     await Promise.all(registeredSale);
     return createdSale;
   };
