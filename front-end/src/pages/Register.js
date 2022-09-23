@@ -7,7 +7,7 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
-import handleValidation from '../helpers/handleValidation';
+import handleUserValidation from '../helpers/handleUserValidation';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -23,7 +23,7 @@ function Register() {
       password: () => setPassword(value),
     };
     loginValues[name]();
-    handleValidation(username, email, password);
+    handleUserValidation(username, email, password);
   };
 
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ function Register() {
           component="button"
           type="submit"
           variant="contained"
-          disabled={ handleValidation(username, email, password) }
+          disabled={ handleUserValidation(username, email, password) }
           data-testid="common_register__button-login"
           onSubmit={ handleSubmit }
         >

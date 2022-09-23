@@ -7,7 +7,7 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
-import handleValidation from '../helpers/handleValidation';
+import handleUserValidation from '../helpers/handleUserValidation';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -21,7 +21,7 @@ function Login() {
       password: () => setPassword(value),
     };
     loginValues[name]();
-    handleValidation(email, password);
+    handleUserValidation(email, password);
   };
 
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ function Login() {
           component="button"
           type="submit"
           variant="contained"
-          disabled={ handleValidation(email, password) }
+          disabled={ handleUserValidation(email, password) }
           data-testid="common_login__button-login"
           onSubmit={ handleSubmit }
         >
