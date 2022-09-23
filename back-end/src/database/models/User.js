@@ -1,4 +1,6 @@
-const User = (sequelize, DataTypes) => {
+'use strict';
+
+module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
@@ -10,17 +12,14 @@ const User = (sequelize, DataTypes) => {
     },
     {
       timestamps: false,
-      modelName: "User",
       tableName: "users",
     }
   );
 
-  // User.associate = (models) => {
-  //   User.hasMany(models.Sale, { foreignKey: "userId", as: "sales" });
-  //   User.hasMany(models.Sale, { foreignKey: "sellerId", as: "sales" });
-  // };
+  User.associate = (models) => {
+    User.hasMany(models.Sale, { foreignKey: "userId", as: "users" });
+    User.hasMany(models.Sale, { foreignKey: "sellerId", as: "sellers" });
+  };
 
   return User;
 };
-
-module.exports = User;

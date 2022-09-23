@@ -1,27 +1,26 @@
-const Product = (sequelize, DataTypes) => {
+'use strict';
+
+module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
     "Product",
     {
+      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       name: DataTypes.STRING,
-      price: DataTypes.DECIMAL(9, 2),
-      urlImage: DataTypes.STRING,
+      price: DataTypes.DECIMAL(4, 2),
     },
     {
       timestamps: false,
-      modelName: "Product",
       tableName: "products",
     }
   );
 
-  // Product.associate = (models) => {
-  //   Product.belongsToMany(models.Sale, {
-  //     through: models.SalesProducts,
-  //     foreignKey: "productId",
-  //     as: "sales",
-  //   });
-  // };
+  Product.associate = (models) => {
+    Product.belongsToMany(models.Sale, {
+      through: models.SalesProducts,
+      foreignKey: "productId",
+      as: "sales",
+    });
+  };
 
   return Product;
 };
-
-module.exports = Product;
