@@ -1,27 +1,27 @@
-const SalesProducts = (sequelize, DataTypes) => {
+"use strict";
+
+module.exports = (sequelize, DataTypes) => {
   const SalesProducts = sequelize.define(
     "SalesProducts",
     {
-      saleId: DataTypes.INTEGER,
-      productId: DataTypes.INTEGER,
+      saleId: { type: DataTypes.INTEGER, foreignKey: true },
+      productId: { type: DataTypes.INTEGER, foreignKey: true },
       quantity: DataTypes.INTEGER,
     },
     {
       timestamps: false,
-      modelName: "SalesProducts",
       tableName: "salesProducts",
+      underscored: true,
     }
   );
 
-  // SalesProducts.associate = (models) => {
-  //   SalesProducts.belongsTo(models.Sale, { foreignKey: "saleId", as: "sales" });
-  //   SalesProducts.belongsTo(models.Product, {
-  //     foreignKey: "productId",
-  //     as: "products",
-  //   });
-  // };
+    SalesProducts.associate = (models) => {
+    SalesProducts.belongsTo(models.Sale, { foreignKey: "saleId", as: "sales" });
+    SalesProducts.belongsTo(models.Product, {
+      foreignKey: "productId",
+      as: "products",
+    });
+  };
 
-  return SalesProduct;
+  return SalesProducts;
 };
-
-module.exports = SalesProducts;
