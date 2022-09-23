@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
-// import handleValidation from '../helpers/handleValidation';
+import Wrapper from '../components/Wrapper';
+import { AppContext } from '../context';
+import handleValidation from '../helpers/handleValidation';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [disabledButton, setDissabledButton] = useState(true);
 
-  const handleValidation = () => {
-    const regexCode = /\S+@\S+\.\S+/;
-    const minPassword = 6;
-    const validMail = regexCode.test(email);
-    if (validMail && password.length >= minPassword) {
-      setDissabledButton(false);
-    } else {
-      setDissabledButton(true);
-    }
-  };
+  const { setUserData } = useContext(AppContext);
 
   const handleChange = ({ target: { name, value } }) => {
     const loginValues = {
@@ -25,46 +21,75 @@ function Login() {
       password: () => setPassword(value),
     };
     loginValues[name]();
-    handleValidation();
+    handleValidation(email, password);
   };
 
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // implementar a lógica da API aqui
+    setUserData({ role: 'customer', username: 'Raphael' });
+    navigate('/customer/products', { replace: true });
+  };
+
+  const handleRegister = () => {
     navigate('/register', { replace: true });
   };
 
   return (
-    <form onSubmit={ handleSubmit }>
-      <h1>Login</h1>
-      <input
-        type="email"
-        name="email"
-        placeholder="email@trybeer.com"
-        value={ email }
-        onChange={ handleChange }
-        data-test-id="common_login__input-email"
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="******"
-        value={ password }
-        onChange={ handleChange }
-        data-test-id="common_login__input-password"
-      />
-      <Button
-        title="LOGIN"
-        disabled={ disabledButton }
-        data-test-id="common_login__button-login"
-      />
-      <Button
-        onSubmit={ handleSubmit }
-        title="Ainda não tenho conta"
-        data-test-id="common_login__button-register"
-      />
-
-    </form>
+    <Wrapper>
+      <Box component="form" onSubmit={ handleSubmit }>
+        <Typography component="h1" variant="h2" gutterBottom>
+          Login
+        </Typography>
+        <FormControl>
+          <TextField
+            variant="filled"
+            label="Login"
+            required
+            type="email"
+            name="email"
+            placeholder="email@trybeer.com"
+            value={ email }
+            onChange={ handleChange }
+            data-testid="common_login__input-email"
+          />
+        </FormControl>
+        <FormControl>
+          <TextField
+            variant="filled"
+            label="Senha"
+            required
+            type="password"
+            name="password"
+            placeholder="******"
+            value={ password }
+            onChange={ handleChange }
+            data-testid="common_login__input-password"
+          />
+        </FormControl>
+        <Button
+          component="button"
+          type="submit"
+          variant="contained"
+          disabled={ handleValidation(email, password) }
+          data-testid="common_login__button-login"
+          onSubmit={ handleSubmit }
+        >
+          LOGIN
+        </Button>
+        <Button
+          component="button"
+          type="button"
+          variant="outlined"
+          data-testid="common_login__button-register"
+          onClick={ handleRegister }
+        >
+          Ainda não tenho conta
+        </Button>
+      </Box>
+    </Wrapper>
   );
 }
 

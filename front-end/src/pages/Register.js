@@ -1,67 +1,97 @@
-import React, { useState } from 'react';
-import Button from '../components/Button';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Wrapper from '../components/Wrapper';
+import { AppContext } from '../context';
+import handleValidation from '../helpers/handleValidation';
 
 function Register() {
-  const [user, setUser] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [disabledButton, setDissabledButton] = useState(true);
 
-  const handleValidation = () => {
-    const completedName = 12;
-    const regexCode = /\S+@\S+\.\S+/;
-    const minPassword = 6;
-    const validMail = regexCode.test(email);
-    if (validMail && password.length >= minPassword && user.length >= completedName) {
-      setDissabledButton(false);
-    } else {
-      setDissabledButton(true);
-    }
-  };
+  const { setUserData } = useContext(AppContext);
 
   const handleChange = ({ target: { name, value } }) => {
-    const registerValues = {
-      user: () => setUser(value),
+    const loginValues = {
+      username: () => setUsername(value),
       email: () => setEmail(value),
       password: () => setPassword(value),
     };
-    registerValues[name]();
-    handleValidation();
+    loginValues[name]();
+    handleValidation(username, email, password);
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // implementar a lógica da API aqui
+    setUserData({ role: 'customer', username: 'Raphael' });
+    navigate('/customer/products', { replace: true });
   };
 
   return (
-    <form>
-      <h1>Register</h1>
-      <input
-        type="text"
-        name="name"
-        placeholder="Seu Nome"
-        value={ user }
-        onChange={ handleChange }
-        data-test-id="common_register__input-name"
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="seu-email@site.com.br"
-        value={ email }
-        onChange={ handleChange }
-        data-test-id="common_register__input-email"
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="******"
-        value={ password }
-        onChange={ handleChange }
-        data-test-id="common_register__input-password"
-      />
-      <Button
-        title="CADASTRAR"
-        data-test-id="common_register__button-register"
-        disabled={ disabledButton }
-      />
-    </form>
+    <Wrapper>
+      <Box component="form" onSubmit={ handleSubmit }>
+        <Typography component="h1" variant="h2" gutterBottom>
+          Register
+        </Typography>
+        <FormControl>
+          <TextField
+            variant="filled"
+            label="Nome"
+            required
+            type="text"
+            name="username"
+            placeholder="Seu nome"
+            value={ username }
+            onChange={ handleChange }
+            data-testid="common_register__input-email"
+          />
+        </FormControl>
+        <FormControl>
+          <TextField
+            variant="filled"
+            label="Login"
+            required
+            type="email"
+            name="email"
+            placeholder="email@trybeer.com"
+            value={ email }
+            onChange={ handleChange }
+            data-testid="common_register__input-email"
+          />
+        </FormControl>
+        <FormControl>
+          <TextField
+            variant="filled"
+            label="Senha"
+            required
+            type="password"
+            name="password"
+            placeholder="******"
+            value={ password }
+            onChange={ handleChange }
+            data-testid="common_register__input-password"
+          />
+        </FormControl>
+        <Button
+          component="button"
+          type="submit"
+          variant="contained"
+          disabled={ handleValidation(username, email, password) }
+          data-testid="common_register__button-login"
+          onSubmit={ handleSubmit }
+        >
+          CADASTRAR
+        </Button>
+      </Box>
+    </Wrapper>
   );
 }
 
