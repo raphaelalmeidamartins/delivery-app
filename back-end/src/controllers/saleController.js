@@ -29,17 +29,10 @@ const deleteSale = async (req, res) => {
   res.status(200).send({ message: 'Sale deleted!' });
   };
 
-const findByArrayId = async (_req, res) => {
-    const result = await productService.totalPrice()
-    return res.status(201).json(result);
-  };
-
-
 module.exports = {
   create,
   list,
-  findById,
+  find,
   update,
   deleteSale,
-  findByArrayId,
 };

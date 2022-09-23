@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/', saleController.create);
 router.get('/', saleController.list);
-router.get('/:id', saleController.findById);
+router.get('/:id', saleController.find);
 router.put('/:id', saleController.update);
 router.delete('/:id', saleController.deleteSale);
 
