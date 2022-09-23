@@ -2,7 +2,9 @@ const db = require('../database/models');
 
 const saleService = {
   create: async (sale) => {
-    const { userId, sellerId, totalPrice, deliveryAddress, deliveryNumber, status } = sale;
+    const { userId, sellerId, totalPrice,
+      deliveryAddress, deliveryNumber, status/* , products */ } = sale;
+
     const saleCreated = await db.Sale.create({
       userId,
       sellerId,
@@ -10,6 +12,7 @@ const saleService = {
       deliveryAddress,
       deliveryNumber,
       status,
+/*       products, */
     });
     return saleCreated;
   },
@@ -19,7 +22,7 @@ const saleService = {
       include: [
         { model: db.User, as: 'user' },
         { model: db.User, as: 'seller' },
-        { model: db.SalesProduct, as: 'salesProducts' },
+        { model: db.Product, as: 'products' },
       ],
     });
     return sales;
