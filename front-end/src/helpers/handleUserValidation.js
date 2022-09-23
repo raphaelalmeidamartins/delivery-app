@@ -1,5 +1,5 @@
-const handleValidation = (username, email, password) => {
-  const maxLengthName = 12;
+const handleUserValidation = (username, email, password) => {
+  const minLengthName = 12;
   const regexCode = /\S+@\S+\.\S+/;
   const minLengthPassword = 6;
   const validMail = regexCode.test(email);
@@ -7,10 +7,10 @@ const handleValidation = (username, email, password) => {
     return !(
       validMail
       && password.length >= minLengthPassword
-      && username.length <= maxLengthName
+      && username.length >= minLengthName
     );
   }
   return !(validMail && password.length >= minLengthPassword);
 };
 
-export default handleValidation;
+export default handleUserValidation;
