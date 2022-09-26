@@ -1,7 +1,10 @@
 const { StatusCodes } = require('http-status-codes');
 
 function validationErrorMiddleware(err, _req, res, next) {
+  if (!err.details) next(err);
+
   const [{ type }] = err.details;
+
   switch (true) {
     case type.includes('required') || type.includes('empty'):
       res.status(StatusCodes.BAD_REQUEST).json({ message: err.message });

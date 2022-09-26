@@ -27,9 +27,13 @@ module.exports = {
     ),
   },
   async login(email, password) {
-    const { dataValues: user } = await User.findOne({ where: { email } });
+    const response = await User.findOne({ where: { email } });
 
-    if (!user || user.password !== generateEncryptedPassword(password)) {
+    if (!response) throw new UnauthorizedError(UNAUTHORIZED_MSG);
+
+    const { dataValues: user } = response;
+
+    if (user.password !== generateEncryptedPassword(password)) {
       throw new UnauthorizedError(UNAUTHORIZED_MSG);
     }
 
