@@ -22,11 +22,16 @@ const create = async (body, authorization) => {
 const listByUser = async (authorization) => {
   const userData = tokenService.validate(authorization);
   const listedSales = await Sale.findAll({
-    include: [
-      { model: User, as: 'user', attributes: { exclude: ['password'] } },
-      { model: User, as: 'seller', attributes: { exclude: ['password'] } },
-      { model: Product, as: 'products' },
-    ],
+    where: { userId: userData.id },
+    attributes: {
+      exclude: [
+        'userId',
+        'password',
+        'sellerId',
+        'deliveryAddress',
+        'deliveryNumber',
+      ],
+    },
   });
   return listedSales;
 };
@@ -58,7 +63,7 @@ const deleteSale = async (id) => {
 
 module.exports = {
   create,
-  list,
+  listByUser,
   find,
   update,
   deleteSale,
