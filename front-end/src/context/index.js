@@ -5,7 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const AppContext = createContext({});
 
 function AppProvider({ children }) {
-  const [userData, setUserData] = useState({});
+  const userDataStored = window.localStorage.getItem('userData');
+  const [userData, setUserData] = useState(JSON.parse(userDataStored) || {});
   const contextValue = useMemo(() => ({ userData, setUserData }), [userData]);
   const { pathname } = useLocation();
 
