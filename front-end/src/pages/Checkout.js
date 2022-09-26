@@ -1,11 +1,15 @@
+import { InputLabel, MenuItem, Select } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import { StatusCodes } from 'http-status-codes';
+import React, { useContext, useState } from 'react';
 import NavBar from '../components/NavBar';
 import OrderDetailsList from '../components/OrderDetailsList';
+import { AppContext } from '../context';
+import service from '../service';
 
 function Checkout() {
   const placeholderItems = [
@@ -13,14 +17,18 @@ function Checkout() {
       id: 1,
       name: 'Placeholder1',
       quantity: 2,
-      price: 15.50,
+      price: 15.5,
     },
     {
       id: 2,
       name: 'Placeholder2',
       quantity: 3,
-      price: 25.50,
+      price: 25.5,
     },
+  ];
+
+  const sellers = [
+    { id: 2, name: 'Fulana Pereira' },
   ];
 
   const [seller, setSeller] = useState('');
@@ -36,7 +44,28 @@ function Checkout() {
     salesValues[name]();
   };
 
-  const handleSubmit = () => {};
+  const { userData } = useContext(AppContext);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // implementar a lógica da API aqui
+    const response = await service.post.sales(userData?.token, {
+      sellerId: seller,
+      deliveryAddress: address,
+      deliveryNumber: addressNumber,
+      products: placeholderItems.map(({ id, quantity }) => ({ id, quantity })),
+    });
+
+    const { status } = response;
+    const data = await response.json();
+
+    // Alterar o conteúdo do if/else
+    if (status !== StatusCodes.CREATED) {
+      console.log('Deu ruim', data.message);
+    } else {
+      console.log('Deu certo!');
+    }
+  };
 
   return (
     <>
@@ -54,16 +83,22 @@ function Checkout() {
             Detalhes e Endereço para entrega
           </Typography>
           <FormControl>
-            <TextField
-              variant="filled"
-              label="P. Vendedora Responsável"
+            <InputLabel id="seller-select-label">P. Vendedora Responsável</InputLabel>
+            <Select
+              labelId="seller-select-label"
+              id="seller-select"
               required
-              type="text"
               name="seller"
               value={ seller }
               onChange={ handleChange }
               inputProps={ { 'data-testid': 'customer_checkout__select-seller' } }
-            />
+            >
+              {sellers?.map(({ id, name }) => (
+                <MenuItem key={ id } value={ id }>
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
           <FormControl>
             <TextField
@@ -86,7 +121,9 @@ function Checkout() {
               name="addressNumber"
               value={ addressNumber }
               onChange={ handleChange }
-              inputProps={ { 'data-testid': 'customer_checkout__input-address-number' } }
+              inputProps={ {
+                'data-testid': 'customer_checkout__input-address-number',
+              } }
             />
           </FormControl>
           <Button
@@ -94,6 +131,7 @@ function Checkout() {
             type="button"
             variant="outlined"
             data-testid="customer_checkout__button-submit-order"
+            disabled={ !(seller && address && addressNumber) }
             onClick={ handleSubmit }
           >
             FINALIZAR PEDIDO
