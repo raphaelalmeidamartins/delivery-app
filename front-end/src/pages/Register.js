@@ -35,7 +35,7 @@ function Register() {
     event.preventDefault();
     // implementar a lógica da API aqui
     if (!handleUserValidation(email, password, username)) {
-      const response = await service.post.user({
+      const response = await service.post.users({
         name: username,
         email,
         password,
