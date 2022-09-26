@@ -1,7 +1,7 @@
 const saleService = require('../services/saleService');
 
 const create = async (req, res) => {
-  const sale = await saleService.create(req.body);
+  const sale = await saleService.create(req.body, req.headers.authorization);
   res.status(201).json(sale);
   };
 
