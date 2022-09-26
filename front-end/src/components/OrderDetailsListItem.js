@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -32,7 +33,12 @@ function OrderDetailsListItem({ index, name, price, quantity, editable }) {
         <td
           data-testid={ `customer_${page}__element-order-table-remove-${index}` }
         >
-          {/* colocar botão de escluir aqui */}
+          <Button
+            type="button"
+            data-testid={ `customer_checkout__element-order-table-remove-${index}` }
+          >
+            Remover
+          </Button>
         </td>
       )}
     </tr>
