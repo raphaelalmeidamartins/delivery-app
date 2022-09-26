@@ -1,8 +1,11 @@
 const Joi = require('joi');
 const { User } = require('../database/models');
+const ConflictError = require('../utils/errors/ConflictError');
 const { generateEncryptedPassword } = require('../utils/generateEncryptedPassword');
 const joiValidator = require('../utils/joiValidator');
 const tokenService = require('./tokenService');
+
+const ALREADY_REGISTERED_MSG = 'User already registered';
 
 module.exports = {
   validate: {
@@ -14,7 +17,13 @@ module.exports = {
       }),
     ),
   },
+  async exists(email) {
+    const user = await User.find({ where: { email } });
+    if (user) throw new ConflictError(ALREADY_REGISTERED_MSG);
+  },
   async create(data) {
+    await this.exists(data.email);
+
     const newCustomer = await User.create({
       ...data,
       role: 'customer',
