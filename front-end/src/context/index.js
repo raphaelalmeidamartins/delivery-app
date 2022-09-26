@@ -6,21 +6,31 @@ const AppContext = createContext({});
 
 function AppProvider({ children }) {
   const [userData, setUserData] = useState({});
-  const contextValue = useMemo(() => ({ userData, setUserData }), [userData]);
+  const [productsData, setProductsData] = useState([]);
+  const contextValue = useMemo(() => (
+    {
+      userData,
+      setUserData,
+      productsData,
+      setProductsData,
+    }), [userData, productsData]);
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
-    if (!Object.keys(userData).length) {
+    if (!Object.keys(userData).length || !Object.keys(productsData).length) {
       window.localStorage.removeItem('userData');
       if (!['/login', '/register'].includes(pathname)) {
         navigate('/login');
       }
-    } else {
       window.localStorage.setItem('userData', JSON.stringify(userData));
     }
-  }, [userData, pathname, navigate]);
+    if (!Object.keys(productsData).length) {
+      window.localStorage.removeItem('productsData');
+      navigate('/customer/products');
+    }
+  }, [userData, productsData, pathname, navigate]);
 
   return (
     <AppContext.Provider value={ contextValue }>{children}</AppContext.Provider>
