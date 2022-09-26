@@ -13,7 +13,9 @@ const totalPriceCalc = async (data) => {
 };
 
 const findAll = async () => {
-  const products = await Product.findAll();
+  const products = await Product.findAll(
+    { attributes: ['id', 'name', 'price', 'url_image'] },
+  );
   return products;
 };
 
