@@ -36,6 +36,21 @@ const listByUser = async (authorization) => {
   return listedSales;
 };
 
+const listBySeller = async (authorization) => {
+  const userData = tokenService.validate(authorization);
+  const listedSales = await Sale.findAll({
+    where: { sellerId: userData.id },
+    attributes: {
+      exclude: [
+        'password',
+        'deliveryAddress',
+        'deliveryNumber',
+      ],
+    },
+  });
+  return listedSales;
+};
+
 const find = async (id) => {
   const foundSale = await Sale.findByPk(id, {
     include: [
@@ -67,4 +82,5 @@ module.exports = {
   find,
   update,
   deleteSale,
+  listBySeller,
 };
