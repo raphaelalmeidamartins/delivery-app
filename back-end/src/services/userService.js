@@ -1,54 +1,70 @@
-const { User } = require('../database/models');
-const { unauthorizedError } = require('../errors/errors');
+const Joi = require('joi');
+const { User, Sale, SalesProduct, sequelize } = require('../database/models');
+const BadRequestError = require('../utils/errors/BadRequestError');
+const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const { generateEncryptedPassword } = require('../utils/generateEncryptedPassword');
-const { verifyToken } = require('../utils/jwtAuthentication');
+const joiValidator = require('../utils/joiValidator');
+const tokenService = require('./tokenService');
 
-const unauthorizedMessage = 'Current user does not have the permissions to perform this request';
+const UNAUTHORIZED_MSG = 'Current user does not have the permissions to perform this request';
+const ALREADY_REGISTERED_MSG = 'User already registered';
 
-const create = async (data, headers) => {
-  const { authorization } = headers;
+module.exports = {
+  validate: {
+    body: joiValidator(
+      Joi.object({
+        name: Joi.string().min(12).required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().min(6).required(),
+        role: Joi.string().optional(),
+      }),
+    ),
+    credentials(authorization) {
+      const { role } = tokenService.validate(authorization);
 
-  const encryptedPassword = generateEncryptedPassword(data.password);
+      if (role !== 'admin') {
+        throw UnauthorizedError(UNAUTHORIZED_MSG);
+      }
+    },
+  },
+  async exists(email) {
+    const user = await User.find({ where: { email } });
+    if (user) throw new BadRequestError(ALREADY_REGISTERED_MSG);
+  },
+  async create(authorization, data) {
+    this.validate.credentials(authorization);
+    await this.exists(data.email);
 
-  const userToBeCreated = { ...data, password: encryptedPassword };
+    const newUser = await User.create({
+      ...data,
+      role: 'customer',
+      password: generateEncryptedPassword(data.password),
+    });
 
-  const tokenIsValid = verifyToken(authorization);
+    return {
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+    };
+  },
+  async list(authorization) {
+    this.validate.credentials(authorization);
 
-  if (tokenIsValid.role !== 'admin') {
-    unauthorizedError(unauthorizedMessage);
-  }
+    const users = await User.findAll({ attributes: { exclude: ['password'] } });
+    return users;
+  },
+  async delete(authorization, userId) {
+    this.validate.credentials(authorization);
 
-  if (data.role !== 'customer' && tokenIsValid.role === 'admin') {
-    const userCreated = User.create(userToBeCreated);
-    return userCreated;
-  }
+    const { sales } = await Sale.findAll({ where: { userId } });
 
-  const userCreated = User.create(userToBeCreated);
-  return userCreated;
+    sequelize.transaction(async (transaction) => {
+      const deleteLinks = sales.map(({ id: saleId }) =>
+        SalesProduct.destroy({ where: { saleId } }, { transaction }));
+      await Promise.all(deleteLinks);
+
+      const deleteSales = sales.map(({ id }) => Sale.destroy({ where: { id } }, { transaction }));
+      await Promise.all(deleteSales);
+    });
+  },
 };
-
-const findAll = async (headers) => {
-  const { authorization } = headers;
-  const tokenIsValid = verifyToken(authorization);
-
-  if (tokenIsValid.role !== 'admin') {
-    unauthorizedError(unauthorizedMessage);
-  }
-
-  const users = User.findAll();
-
-  return users;
-};
-
-const deleteUser = async (id, headers) => {
-  const { authorization } = headers;
-  const tokenIsValid = verifyToken(authorization);
-
-  if (tokenIsValid.role !== 'admin') {
-    unauthorizedError(unauthorizedMessage);
-  }
-
-  await User.destroy({ where: { id } });
-};
-
-module.exports = { create, findAll, deleteUser };
