@@ -1,4 +1,6 @@
-const User = (sequelize, DataTypes) => {
+'use strict';
+
+module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
     {
@@ -17,5 +19,3 @@ const User = (sequelize, DataTypes) => {
 
   return User;
 };
-
-module.exports = User;
