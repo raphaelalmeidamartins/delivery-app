@@ -1,6 +1,6 @@
 const Product = (sequelize, DataTypes) => {
   const Product = sequelize.define(
-    "Product",
+    'Product',
     {
       name: DataTypes.STRING,
       price: DataTypes.DECIMAL(9, 2),
@@ -8,18 +8,10 @@ const Product = (sequelize, DataTypes) => {
     },
     {
       timestamps: false,
-      modelName: "Product",
-      tableName: "products",
+      modelName: 'Product',
+      tableName: 'products',
     }
   );
-
-  // Product.associate = (models) => {
-  //   Product.belongsToMany(models.Sale, {
-  //     through: models.SalesProducts,
-  //     foreignKey: "productId",
-  //     as: "sales",
-  //   });
-  // };
 
   return Product;
 };
