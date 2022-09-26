@@ -6,8 +6,8 @@ const create = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ saleId: sale.id });
   };
 
-const list = async (_req, res) => {
-  const sales = await saleService.list();
+const listByUser = async (req, res) => {
+  const sales = await saleService.listByUser(req.headers.authorization);
   res.status(StatusCodes.OK).json(sales);
   };
 
@@ -31,7 +31,7 @@ const deleteSale = async (req, res) => {
 
 module.exports = {
   create,
-  list,
+  listByUser,
   find,
   update,
   deleteSale,
