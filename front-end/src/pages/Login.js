@@ -70,7 +70,7 @@ function Login() {
             placeholder="email@trybeer.com"
             value={ email }
             onChange={ handleChange }
-            data-testid="common_login__input-email"
+            inputProps={ { 'data-testid': 'common_login__input-email' } }
           />
         </FormControl>
         <FormControl>
@@ -83,7 +83,7 @@ function Login() {
             placeholder="******"
             value={ password }
             onChange={ handleChange }
-            data-testid="common_login__input-password"
+            inputProps={ { 'data-testid': 'common_login__input-password' } }
           />
         </FormControl>
         <Button

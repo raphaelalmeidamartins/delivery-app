@@ -69,7 +69,7 @@ function Register() {
             placeholder="Seu nome"
             value={ username }
             onChange={ handleChange }
-            data-testid="common_register__input-email"
+            inputProps={ { 'data-testid': 'common_register__input-name' } }
           />
         </FormControl>
         <FormControl>
@@ -82,7 +82,7 @@ function Register() {
             placeholder="email@trybeer.com"
             value={ email }
             onChange={ handleChange }
-            data-testid="common_register__input-email"
+            inputProps={ { 'data-testid': 'common_register__input-email' } }
           />
         </FormControl>
         <FormControl>
@@ -95,7 +95,7 @@ function Register() {
             placeholder="******"
             value={ password }
             onChange={ handleChange }
-            data-testid="common_register__input-password"
+            inputProps={ { 'data-testid': 'common_register__input-password' } }
           />
         </FormControl>
         <Button
@@ -103,7 +103,7 @@ function Register() {
           type="submit"
           variant="contained"
           disabled={ handleUserValidation(email, password, username) }
-          data-testid="common_register__button-login"
+          data-testid="common_register__button-register"
           onSubmit={ handleSubmit }
         >
           CADASTRAR
