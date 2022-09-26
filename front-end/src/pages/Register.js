@@ -32,7 +32,7 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // implementar a lógica da API aqui
-    if (!handleUserValidation(username, email, password)) {
+    if (!handleUserValidation(email, password, username)) {
       const userData = await service.post.user({
         username,
         email,
@@ -40,7 +40,6 @@ function Register() {
         role: 'customer',
       });
       setUserData(userData);
-      setUserData({ role: 'customer', username: 'Raphael' });
       navigate('/customer/products', { replace: true });
     }
   };
@@ -94,7 +93,7 @@ function Register() {
           component="button"
           type="submit"
           variant="contained"
-          disabled={ handleUserValidation(username, email, password) }
+          disabled={ handleUserValidation(email, password, username) }
           data-testid="common_register__button-login"
           onSubmit={ handleSubmit }
         >
