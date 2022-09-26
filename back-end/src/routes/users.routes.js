@@ -1,13 +1,14 @@
 const { Router } = require('express');
 const userController = require('../controllers/userController');
-const userValidation = require('../middlewares/userValidation');
+const authController = require('../controllers/authController');
 
 const router = Router();
 
-router.get('/', userController.findAll);
+/* colocar isso em todas as rotas autenticadas */
+router.use(authController.authenticate);
 
-router.post('/', userValidation, userController.create);
-
-router.delete('/:id', userController.deleteUser);
+router.get('/', userController.list);
+router.post('/', userController.create);
+router.delete('/:id', userController.delete);
 
 module.exports = router;

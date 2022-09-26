@@ -1,6 +1,8 @@
-const User = (sequelize, DataTypes) => {
+'use strict';
+
+module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
-    "User",
+    'User',
     {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       name: DataTypes.STRING,
@@ -10,17 +12,10 @@ const User = (sequelize, DataTypes) => {
     },
     {
       timestamps: false,
-      modelName: "User",
-      tableName: "users",
+      modelName: 'User',
+      tableName: 'users',
     }
   );
 
-  // User.associate = (models) => {
-  //   User.hasMany(models.Sale, { foreignKey: "userId", as: "sales" });
-  //   User.hasMany(models.Sale, { foreignKey: "sellerId", as: "sales" });
-  // };
-
   return User;
 };
-
-module.exports = User;

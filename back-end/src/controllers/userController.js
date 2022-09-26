@@ -1,18 +1,18 @@
+const { StatusCodes } = require('http-status-codes');
 const userService = require('../services/userService');
 
-const create = async (req, res) => {
-  const userCreated = await userService.create(req.body, req.headers);
-  return res.status(201).json(userCreated);
+module.exports = {
+  async create(req, res) {
+    const data = await userService.validate.body(req.headers.authorization, req.body);
+    const newUser = await userService.create(data);
+    res.status(StatusCodes.CREATED).json(newUser);
+  },
+  async list(req, res) {
+    const users = await userService.list(req.headers.authorization);
+    res.status(StatusCodes.OK).json(users);
+  },
+  async delete(req, res) {
+    await userService.delete(req.headers.authorization, req.params.id);
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  },
 };
-
-const findAll = async (req, res) => {
-  const allUsers = await userService.findAll(req.headers);
-  return res.status(200).json(allUsers);
-};
-
-const deleteUser = async (req, res) => {
-  await userService.deleteUser(req.params.id, req.headers);
-  return res.status(204).end();
-};
-
-module.exports = { create, findAll, deleteUser };
