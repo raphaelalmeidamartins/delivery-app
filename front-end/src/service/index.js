@@ -10,11 +10,10 @@ const service = {
         },
         body: JSON.stringify(loginData),
       });
-      const userData = await response.json();
-      return userData;
+      return response;
     },
     async user(registerData) {
-      const response = await fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/users`, {
+      const response = await fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/customers`, {
         method: 'POST',
         headers: {
           Accept: 'application/json, text/plain, */*',
@@ -23,8 +22,7 @@ const service = {
         },
         body: JSON.stringify(registerData),
       });
-      const userData = await response.json();
-      return userData;
+      return response;
     },
   },
 };
