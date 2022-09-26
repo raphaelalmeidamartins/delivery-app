@@ -5,6 +5,7 @@ const headers = {
 };
 
 const service = {
+
   post: {
     async login(loginData) {
       const response = await fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/login`, {
