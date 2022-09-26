@@ -18,7 +18,7 @@ module.exports = {
     ),
   },
   async exists(email) {
-    const user = await User.find({ where: { email } });
+    const user = await User.findOne({ where: { email } });
     if (user) throw new ConflictError(ALREADY_REGISTERED_MSG);
   },
   async create(data) {
