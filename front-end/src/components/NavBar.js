@@ -9,7 +9,7 @@ function NavBar() {
   } = useContext(AppContext);
 
   const handleLogout = () => {
-    setUserData(undefined);
+    setUserData({});
   };
 
   return (
@@ -39,7 +39,7 @@ function NavBar() {
         </ul>
         <section>
           <span data-testid="customer_products__element-navbar-user-full-name">
-            {userData?.username}
+            {userData?.name}
           </span>
           <button
             data-testid="customer_products__element-navbar-link-logout"

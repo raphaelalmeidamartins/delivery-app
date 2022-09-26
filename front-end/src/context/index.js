@@ -1,23 +1,26 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useLayoutEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AppContext = createContext({});
 
 function AppProvider({ children }) {
-  const [userData, setUserData] = useState({ role: 'customer', username: 'Raphael' });
+  const [userData, setUserData] = useState({});
   const contextValue = useMemo(() => ({ userData, setUserData }), [userData]);
+  const { pathname } = useLocation();
 
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
-    if (!userData) {
+    if (!Object.keys(userData).length) {
       window.localStorage.removeItem('userData');
-      navigate('/login');
+      if (!['/login', '/register'].includes(pathname)) {
+        navigate('/login');
+      }
     } else {
       window.localStorage.setItem('userData', JSON.stringify(userData));
     }
-  }, [userData, navigate]);
+  }, [userData, pathname, navigate]);
 
   return (
     <AppContext.Provider value={ contextValue }>{children}</AppContext.Provider>
