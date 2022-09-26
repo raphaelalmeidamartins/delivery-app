@@ -1,19 +1,31 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
+import service from '../service';
+import { AppContext } from '../context';
 
 function Products() {
+  const { productsData, setProductsData } = React.useContext(AppContext);
+
+  React.useEffect(() => {
+    service.get.products().then((response) => response.json()).then((data) => {
+      setProductsData(data);
+    });
+  }, [setProductsData]);
+
   return (
     <div>
       <NavBar />
       <main>
-        {/* Quando o back-end estiver pronto, dar map nos produtos retornados pela API */}
-        <ProductCard
-          price={ 10 }
-          thumbnail="http://placekitten.com/200/300"
-          name="Placeholder"
-          testId={ 1 }
-        />
+        {productsData.map((product, index) => (
+          <ProductCard
+            key={ product.id }
+            testId={ index }
+            name={ product.name }
+            price={ Number(product.price) }
+            thumbnail={ product.url_image }
+          />
+        ))}
       </main>
     </div>
   );
