@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const { User } = require('../database/models');
+const NotFoundError = require('../utils/errors/NotFoundError');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const { generateEncryptedPassword } = require('../utils/generateEncryptedPassword');
 const joiValidator = require('../utils/joiValidator');
@@ -29,7 +30,7 @@ module.exports = {
   async login(email, password) {
     const response = await User.findOne({ where: { email } });
 
-    if (!response) throw new UnauthorizedError(UNAUTHORIZED_MSG);
+    if (!response) throw new NotFoundError(UNAUTHORIZED_MSG);
 
     const { dataValues: user } = response;
 

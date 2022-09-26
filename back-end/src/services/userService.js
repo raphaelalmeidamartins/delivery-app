@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const { User, Sale, SalesProduct, sequelize } = require('../database/models');
-const BadRequestError = require('../utils/errors/BadRequestError');
+const ConflictError = require('../utils/errors/ConflictError');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const { generateEncryptedPassword } = require('../utils/generateEncryptedPassword');
 const joiValidator = require('../utils/joiValidator');
@@ -29,7 +29,7 @@ module.exports = {
   },
   async exists(email) {
     const user = await User.find({ where: { email } });
-    if (user) throw new BadRequestError(ALREADY_REGISTERED_MSG);
+    if (user) throw new ConflictError(ALREADY_REGISTERED_MSG);
   },
   async create(authorization, data) {
     this.validate.credentials(authorization);
