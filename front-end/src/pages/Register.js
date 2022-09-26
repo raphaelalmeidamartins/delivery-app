@@ -94,7 +94,7 @@ function Register() {
           component="button"
           type="submit"
           variant="contained"
-          disabled={ handleUserValidation(username, email, password) }
+          disabled={ handleUserValidation(email, password, username) }
           data-testid="common_register__button-login"
           onSubmit={ handleSubmit }
         >
