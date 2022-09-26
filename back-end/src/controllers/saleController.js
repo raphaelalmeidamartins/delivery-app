@@ -11,6 +11,11 @@ const listByUser = async (req, res) => {
   res.status(StatusCodes.OK).json(sales);
   };
 
+const listBySeller = async (req, res) => {
+  const sales = await saleService.listBySeller(req.headers.authorization);
+  res.status(StatusCodes.OK).json(sales);
+  };
+
 const find = async (req, res) => {
   const { id } = req.params;
   const sale = await saleService.find(id);
@@ -35,4 +40,5 @@ module.exports = {
   find,
   update,
   deleteSale,
+  listBySeller,
 };
