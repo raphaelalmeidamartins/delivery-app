@@ -1,4 +1,4 @@
-const handleUserValidation = (username, email, password) => {
+const handleUserValidation = (email, password, username) => {
   const minLengthName = 12;
   const regexCode = /\S+@\S+\.\S+/;
   const minLengthPassword = 6;
