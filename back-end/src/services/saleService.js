@@ -19,7 +19,8 @@ const create = async (body, authorization) => {
   return createdSale;
 };
 
-const list = async () => {
+const listByUser = async (authorization) => {
+  const userData = tokenService.validate(authorization);
   const listedSales = await Sale.findAll({
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
