@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
@@ -14,6 +15,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
   const { setUserData } = useContext(AppContext);
 
@@ -33,14 +35,21 @@ function Register() {
     event.preventDefault();
     // implementar a lógica da API aqui
     if (!handleUserValidation(email, password, username)) {
-      const userData = await service.post.user({
-        username,
+      const response = await service.post.user({
+        name: username,
         email,
         password,
-        role: 'customer',
       });
-      setUserData(userData);
-      navigate('/customer/products', { replace: true });
+
+      const { status } = response;
+      const data = await response.json();
+
+      if (status !== StatusCodes.CREATED) {
+        setErrMsg(data.message);
+      } else {
+        setUserData(data);
+        navigate('/customer/products', { replace: true });
+      }
     }
   };
 
@@ -100,6 +109,15 @@ function Register() {
           CADASTRAR
         </Button>
       </Box>
+      {!!errMsg && (
+        <Typography
+          data-testid="common_register__element-invalid_register"
+          variant="body2"
+          paragraph
+        >
+          {errMsg}
+        </Typography>
+      )}
     </Wrapper>
   );
 }

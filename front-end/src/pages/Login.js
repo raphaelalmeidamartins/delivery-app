@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
@@ -13,6 +14,7 @@ import service from '../service';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
   const { setUserData } = useContext(AppContext);
 
@@ -31,12 +33,20 @@ function Login() {
     event.preventDefault();
     // implementar a lógica da API aqui
     if (!handleUserValidation(email, password)) {
-      const userData = await service.post.login({
+      const response = await service.post.login({
         email,
         password,
       });
-      setUserData(userData);
-      navigate('/customer/products', { replace: true });
+
+      const { status } = response;
+      const data = await response.json();
+
+      if (status !== StatusCodes.OK) {
+        setErrMsg(data.message);
+      } else {
+        setUserData(data);
+        navigate('/customer/products', { replace: true });
+      }
     }
   };
 
@@ -96,6 +106,15 @@ function Login() {
           Ainda não tenho conta
         </Button>
       </Box>
+      {!!errMsg && (
+        <Typography
+          data-testid="common_login__element-invalid-email"
+          variant="body2"
+          paragraph
+        >
+          {errMsg}
+        </Typography>
+      )}
     </Wrapper>
   );
 }
