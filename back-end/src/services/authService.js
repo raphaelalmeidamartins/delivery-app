@@ -34,6 +34,11 @@ module.exports = {
     }
 
     const token = await tokenService.create({ id: user.id, role: user.role });
-    return token;
+    return {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token,
+    };
   },
 };
