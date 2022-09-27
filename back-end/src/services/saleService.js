@@ -43,8 +43,6 @@ const listBySeller = async (authorization) => {
     attributes: {
       exclude: [
         'password',
-        'deliveryAddress',
-        'deliveryNumber',
       ],
     },
   });
@@ -69,7 +67,7 @@ const update = async (id, body) => {
   return updatedSale;
 };
 
-const deleteSale = async (id) => {
+const remove = async (id) => {
   const deletedSale = await Sale.delete({
     where: { id },
   });
@@ -81,6 +79,6 @@ module.exports = {
   listByUser,
   find,
   update,
-  deleteSale,
+  remove,
   listBySeller,
 };
