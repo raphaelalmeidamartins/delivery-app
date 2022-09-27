@@ -1,8 +1,10 @@
+const Joi = require('joi');
 const { Sale, User, Product } = require('../database/models');
 const productService = require('./productService');
 const tokenService = require('./tokenService');
 const saleProductService = require('./saleProductService');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+const joiValidator = require('../utils/joiValidator');
 
 const UNAUTHORIZED_MSG = 'You are not authorized to do this.';
 
@@ -52,7 +54,8 @@ const listBySeller = async (authorization) => {
   return listedSales;
 };
 
-const find = async (id) => {
+const find = async (id, authorization) => {
+  tokenService.validate(authorization);
   const foundSale = await Sale.findAll({ 
     where: { id },
     include: [
@@ -82,6 +85,13 @@ const remove = async (id) => {
 };
 
 module.exports = {
+  validate: {
+    body: joiValidator(
+      Joi.object({
+        status: Joi.string().valid('Pendente', 'Preparando', 'Em Trânsito', 'Entregue').required(),
+      }),
+    ),
+  },
   create,
   listByUser,
   find,
