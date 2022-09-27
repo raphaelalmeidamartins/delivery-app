@@ -18,11 +18,12 @@ const listBySeller = async (req, res) => {
 
 const find = async (req, res) => {
   const { id } = req.params;
-  const sale = await saleService.find(id);
+  const sale = await saleService.find(id, req.headers.authorization);
   res.status(StatusCodes.OK).json(sale);
   };
 
 const update = async (req, res) => {
+  saleService.validate.body(req.body);
   const { id } = req.params;
   await saleService.update(id, req.body, req.headers.authorization);
   res.sendStatus(StatusCodes.NO_CONTENT);
