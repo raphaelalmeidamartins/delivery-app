@@ -15,7 +15,7 @@ const service = {
       });
       return response;
     },
-    async users(registerData) {
+    async customers(registerData) {
       const response = await fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/customers`, {
         method: 'POST',
         headers,
