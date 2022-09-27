@@ -50,11 +50,11 @@ const listBySeller = async (authorization) => {
 };
 
 const find = async (id) => {
-  const foundSale = await Sale.findByPk(id, {
+  const foundSale = await Sale.findAll({ 
+    where: { id },
     include: [
-      { model: User, as: 'user', attributes: { exclude: ['password'] } },
       { model: User, as: 'seller', attributes: { exclude: ['password'] } },
-      { model: Product, as: 'products' },
+      { model: Product, as: 'products', through: { attributes: ['quantity'] } },
     ],
   });
   return foundSale;
