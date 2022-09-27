@@ -24,8 +24,8 @@ const find = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  await saleService.update(id, req.body);
-  res.status(StatusCodes.OK).send({ message: 'Sale updated!' });
+  await saleService.update(id, req.body, req.headers.authorization);
+  res.sendStatus(StatusCodes.NO_CONTENT);
   };
 
 const remove = async (req, res) => {
