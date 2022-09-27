@@ -28,9 +28,9 @@ const update = async (req, res) => {
   res.status(StatusCodes.OK).send({ message: 'Sale updated!' });
   };
 
-const deleteSale = async (req, res) => {
+const remove = async (req, res) => {
   const { id } = req.params;
-  await saleService.delete(id);
+  await saleService.remove(id);
   res.status(StatusCodes.OK).send({ message: 'Sale deleted!' });
   };
 
@@ -39,6 +39,6 @@ module.exports = {
   listByUser,
   find,
   update,
-  deleteSale,
+  remove,
   listBySeller,
 };
