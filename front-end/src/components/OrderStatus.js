@@ -6,10 +6,10 @@ function OrderStatus({ status, testId }) {
   const { userData } = useContext(AppContext);
 
   const displayText = {
-    Pendente: 'PENDENTE',
-    Preparando: 'PREPARANDO',
-    Entregue: 'ENTREGUE',
-    'Em Trânsito': 'SAIU PARA ENTREGA',
+    Pendente: 'Pendente',
+    Preparando: 'Preparando',
+    Entregue: 'Entregue',
+    'Em Trânsito': 'Saiu para entrega',
   };
 
   return (
