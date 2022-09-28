@@ -5,7 +5,6 @@ import OrderStatus from './OrderStatus';
 
 function OrderCard({ id, status, date, totalPrice, testId }) {
   const { userData } = useContext(AppContext);
-
   return (
     <section style={ { border: '1px solid black' } }>
       <span data-testid={ `${userData.role}_orders__element-order-id-${testId}` }>
@@ -31,7 +30,8 @@ function OrderCard({ id, status, date, totalPrice, testId }) {
 OrderCard.propTypes = {
   testId: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired,
-  status: PropTypes.oneOf(['pending', 'preparing', 'delivered']).isRequired,
+  status: PropTypes.oneOf(['Pendente', 'Preparando', 'Em Trânsito', 'Entregue'])
+    .isRequired,
   totalPrice: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
 };
