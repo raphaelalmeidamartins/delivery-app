@@ -5,8 +5,8 @@ const tokenService = require('../services/tokenService');
 module.exports = {
   async login(req, res) {
     const { email, password } = await authService.validate.body(req.body);
-    const token = await authService.login(email, password);
-    res.status(StatusCodes.OK).json({ token });
+    const userData = await authService.login(email, password);
+    res.status(StatusCodes.OK).json(userData);
   },
   authenticate(req, _res, next) {
     const { authorization } = req.headers;
