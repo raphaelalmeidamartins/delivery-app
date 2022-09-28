@@ -3,14 +3,14 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Select from '@mui/material/Select';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
-import handleUserValidation from '../helpers/handleUserValidation';
+import handleManageValidation from '../helpers/handleManageValidation';
 import service from '../service';
+import NavBar from '../components/NavBar';
 
 function Manage() {
   const [username, setUsername] = useState('');
@@ -29,16 +29,15 @@ function Manage() {
       role: () => setRole(value),
     };
     loginValues[name]();
-    handleUserValidation(username, email, password, role);
+    handleManageValidation(username, email, password, role);
   };
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // implementar a lógica da API aqui
-    if (!handleUserValidation(email, password, username, role)) {
-      const response = await service.post.manage({
+    if (!handleManageValidation(email, password, username, role)) {
+      const response = await service.post.users({
         name: username,
         email,
         password,
@@ -60,13 +59,17 @@ function Manage() {
   return (
     <Wrapper>
       <Box component="form" onSubmit={ handleSubmit }>
+        <NavBar />
         <Typography component="h1" variant="h2" gutterBottom>
           Cadastrar novo usuário
         </Typography>
         <FormControl>
+          <Typography component="p" gutterBottom>
+            Nome
+          </Typography>
           <TextField
             variant="filled"
-            label="Nome"
+            label="Nome e sobrenome"
             required
             type="text"
             name="username"
@@ -77,9 +80,12 @@ function Manage() {
           />
         </FormControl>
         <FormControl>
+          <Typography component="p" gutterBottom>
+            Email
+          </Typography>
           <TextField
             variant="filled"
-            label="Login"
+            label="seu-email@site.com.br"
             required
             type="email"
             name="email"
@@ -90,6 +96,9 @@ function Manage() {
           />
         </FormControl>
         <FormControl>
+          <Typography component="p" gutterBottom>
+            Senha
+          </Typography>
           <TextField
             variant="filled"
             label="Senha"
@@ -103,8 +112,10 @@ function Manage() {
           />
         </FormControl>
         <FormControl>
-          <Select
-            native
+          <Typography component="p" gutterBottom>
+            Tipo
+          </Typography>
+          <select
             label="Tipo"
             required
             type="role"
@@ -117,13 +128,13 @@ function Manage() {
             <option value="" disabled>Tipo</option>
             <option value="customer">Cliente</option>
             <option value="seller">Vendedor</option>
-          </Select>
+          </select>
         </FormControl>
         <Button
           component="button"
           type="submit"
           variant="contained"
-          disabled={ handleUserValidation(email, password, username, role) }
+          disabled={ handleManageValidation(email, password, username, role) }
           data-testid="admin_manage__button-register"
           onSubmit={ handleSubmit }
         >
