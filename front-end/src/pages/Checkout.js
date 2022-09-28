@@ -77,8 +77,7 @@ function Checkout() {
           </Typography>
           <OrderDetailsList orderItems={ placeholderItems } editable />
         </section>
-        <Box component="form" onSubmit={ handleSubmit } />
-        <form>
+        <Box component="form" onSubmit={ handleSubmit }>
           <Typography component="h2" variant="h2" gutterBottom>
             Detalhes e Endereço para entrega
           </Typography>
@@ -136,7 +135,7 @@ function Checkout() {
           >
             FINALIZAR PEDIDO
           </Button>
-        </form>
+        </Box>
       </main>
     </>
   );
