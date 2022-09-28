@@ -22,12 +22,12 @@ function OrderDetailsListItem({ index, name, price, quantity, editable }) {
       <td
         data-testid={ `customer_${page}__element-order-table-unit-price-${index}` }
       >
-        {`R$ ${price.toFixed(2)}`}
+        {`R$ ${price.toFixed(2).replace('.', ',')}`}
       </td>
       <td
         data-testid={ `customer_${page}__element-order-table-sub-total-${index}` }
       >
-        {`R$ ${(quantity * price).toFixed(2)}`}
+        {`R$ ${(quantity * price).toFixed(2).replace('.', ',')}`}
       </td>
       {editable && (
         <td
