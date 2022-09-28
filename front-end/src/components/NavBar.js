@@ -37,7 +37,7 @@ function NavBar() {
                   data-testid="customer_products__element-navbar-link-orders"
                   onClick={ () => navigate('/customer/orders') }
                 >
-                  PRODUTOS
+                  MEUS PRODUTOS
                 </Button>
               </li>
             </>
