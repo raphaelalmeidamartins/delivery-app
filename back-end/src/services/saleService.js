@@ -17,7 +17,7 @@ const create = async (body, authorization) => {
     sellerId,
     deliveryAddress,
     deliveryNumber,
-    status: 'pending',
+    status: 'Pendente',
     totalPrice,
   });
   await saleProductService.create(products, createdSale.id);
