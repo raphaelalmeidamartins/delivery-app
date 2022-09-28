@@ -1,37 +1,45 @@
+const { StatusCodes } = require('http-status-codes');
 const saleService = require('../services/saleService');
 
 const create = async (req, res) => {
-  const sale = await saleService.create(req.body);
-  res.status(201).json(sale);
+  const sale = await saleService.create(req.body, req.headers.authorization);
+  res.status(StatusCodes.CREATED).json({ saleId: sale.id });
   };
 
-const list = async (_req, res) => {
-  const sales = await saleService.list();
-  res.status(200).json(sales);
+const listByUser = async (req, res) => {
+  const sales = await saleService.listByUser(req.headers.authorization);
+  res.status(StatusCodes.OK).json(sales);
+  };
+
+const listBySeller = async (req, res) => {
+  const sales = await saleService.listBySeller(req.headers.authorization);
+  res.status(StatusCodes.OK).json(sales);
   };
 
 const find = async (req, res) => {
   const { id } = req.params;
-  const sale = await saleService.find(id);
-  res.status(200).json(sale);
+  const sale = await saleService.find(id, req.headers.authorization);
+  res.status(StatusCodes.OK).json(sale);
   };
 
 const update = async (req, res) => {
+  saleService.validate.body(req.body);
   const { id } = req.params;
-  await saleService.update(id, req.body);
-  res.status(200).send({ message: 'Sale updated!' });
+  await saleService.update(id, req.body, req.headers.authorization);
+  res.sendStatus(StatusCodes.NO_CONTENT);
   };
 
-const deleteSale = async (req, res) => {
+const remove = async (req, res) => {
   const { id } = req.params;
-  await saleService.delete(id);
-  res.status(200).send({ message: 'Sale deleted!' });
+  await saleService.remove(id);
+  res.status(StatusCodes.OK).send({ message: 'Sale deleted!' });
   };
 
 module.exports = {
   create,
-  list,
+  listByUser,
   find,
   update,
-  deleteSale,
+  remove,
+  listBySeller,
 };

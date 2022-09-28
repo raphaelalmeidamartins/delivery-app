@@ -1,64 +1,101 @@
-const { Sale, User, Product, SalesProducts } = require('../database/models');
+const Joi = require('joi');
+const { Sale, User, Product } = require('../database/models');
 const productService = require('./productService');
+const tokenService = require('./tokenService');
+const saleProductService = require('./saleProductService');
+const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+const joiValidator = require('../utils/joiValidator');
 
-  const create = async (body) => {
-    const { userId, sellerId, deliveryAddress, deliveryNumber, products } = body;
-    const totalPrice = await productService.totalPriceCalc(products);
-    const createdSale = await Sale.create({
-      userId,
-      sellerId,
-      deliveryAddress,
-      deliveryNumber,
-      status: 'pending',
-      totalPrice,
-    });
-    const registeredSale = products.map(async (item) => {
-      await SalesProducts.create({ productId: item.id, quantity: item.quantity, saleId: Sale.id });
-    });
-    await Promise.all(registeredSale);
-    return createdSale;
-  };
+const UNAUTHORIZED_MSG = 'You are not authorized to do this.';
 
-  const list = async () => {
-    const listedSales = await Sale.findAll({
-      include: [
-        { model: User, as: 'user', attributes: { exclude: ['password'] } },
-        { model: User, as: 'seller', attributes: { exclude: ['password'] } },
-        { model: Product, as: 'products' },
+const create = async (body, authorization) => {
+  const { sellerId, deliveryAddress, deliveryNumber, products } = body;
+  const userData = tokenService.validate(authorization);
+  const totalPrice = await productService.totalPriceCalc(products);
+  const createdSale = await Sale.create({
+    userId: userData.id,
+    sellerId,
+    deliveryAddress,
+    deliveryNumber,
+    status: 'Pendente',
+    totalPrice,
+  });
+  await saleProductService.create(products, createdSale.id);
+  return createdSale;
+};
+
+const listByUser = async (authorization) => {
+  const userData = tokenService.validate(authorization);
+  const listedSales = await Sale.findAll({
+    where: { userId: userData.id },
+    attributes: {
+      exclude: [
+        'userId',
+        'password',
+        'sellerId',
+        'deliveryAddress',
+        'deliveryNumber',
       ],
-    });
-    return listedSales;
-  };
+    },
+  });
+  return listedSales;
+};
 
-  const find = async (id) => {
-    const foundSale = await Sale.findByPk(id, {
-      include: [
-        { model: User, as: 'user', attributes: { exclude: ['password'] } },
-        { model: User, as: 'seller', attributes: { exclude: ['password'] } },
-        { model: Product, as: 'products' },
+const listBySeller = async (authorization) => {
+  const userData = tokenService.validate(authorization);
+  const listedSales = await Sale.findAll({
+    where: { sellerId: userData.id },
+    attributes: {
+      exclude: [
+        'password',
       ],
-    });
-    return foundSale;
-  };
+    },
+  });
+  return listedSales;
+};
 
-  const update = async (id, body) => {
-    const updatedSale = await Sale.update(body, {
-      where: { id },
-    });
-    return updatedSale;
-  };
+const find = async (id, authorization) => {
+  tokenService.validate(authorization);
+  const foundSale = await Sale.findAll({ 
+    where: { id },
+    include: [
+      { model: User, as: 'seller', attributes: { exclude: ['password'] } },
+      { model: Product, as: 'products', through: { attributes: ['quantity'] } },
+    ],
+  });
+  return foundSale;
+};
 
-  const deleteSale = async (id) => {
-    const deletedSale = await Sale.delete({
-      where: { id },
-    });
-    return deletedSale;
-  };
+const update = async (id, body, authorization) => {
+  const userData = tokenService.validate(authorization);
+  if (userData.role !== 'seller') { 
+    throw new UnauthorizedError(UNAUTHORIZED_MSG);
+  }
+  const updatedSale = await Sale.update(body, {
+    where: { id },
+  });
+  return updatedSale;
+};
 
-  module.exports = {
-    create,
-    list,
-    find,
-    update,
-    deleteSale,
-  };
+const remove = async (id) => {
+  const deletedSale = await Sale.delete({
+    where: { id },
+  });
+  return deletedSale;
+};
+
+module.exports = {
+  validate: {
+    body: joiValidator(
+      Joi.object({
+        status: Joi.string().valid('Pendente', 'Preparando', 'Em Trânsito', 'Entregue').required(),
+      }),
+    ),
+  },
+  create,
+  listByUser,
+  find,
+  update,
+  remove,
+  listBySeller,
+};
