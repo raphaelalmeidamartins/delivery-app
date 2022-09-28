@@ -2,27 +2,31 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import InputNumber from './InputNumber';
 
-function ProductCard({ price, thumbnail, name, testId }) {
+function ProductCard({ price, thumbnail, name, id }) {
   return (
     <section style={ { border: '1px solid black' } }>
-      <span data-testid={ `customer_products__element-card-price-${testId}` }>
-        {`R$ ${price.toFixed(2)}`}
+      <span data-testid={ `customer_products__element-card-price-${id}` }>
+        {`R$ ${price.toFixed(2).replace('.', ',')}`}
       </span>
       <img
-        data-testid={ `customer_products__img-card-bg-image-${testId}` }
+        style={ { width: '100px', objectFit: 'contain' } }
+        data-testid={ `customer_products__img-card-bg-image-${id}` }
         src={ thumbnail }
         alt="prévia do produto"
       />
-      <span data-testid={ `customer_products__element-card-title-${testId}` }>
+      <span data-testid={ `customer_products__element-card-title-${id}` }>
         {name}
       </span>
-      <InputNumber />
+      <InputNumber
+        product={ { price, thumbnail, name, id } }
+        id={ id }
+      />
     </section>
   );
 }
 
 ProductCard.propTypes = {
-  testId: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   thumbnail: PropTypes.string.isRequired,
