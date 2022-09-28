@@ -18,19 +18,20 @@ const listBySeller = async (req, res) => {
 
 const find = async (req, res) => {
   const { id } = req.params;
-  const sale = await saleService.find(id);
+  const sale = await saleService.find(id, req.headers.authorization);
   res.status(StatusCodes.OK).json(sale);
   };
 
 const update = async (req, res) => {
+  saleService.validate.body(req.body);
   const { id } = req.params;
-  await saleService.update(id, req.body);
-  res.status(StatusCodes.OK).send({ message: 'Sale updated!' });
+  await saleService.update(id, req.body, req.headers.authorization);
+  res.sendStatus(StatusCodes.NO_CONTENT);
   };
 
-const deleteSale = async (req, res) => {
+const remove = async (req, res) => {
   const { id } = req.params;
-  await saleService.delete(id);
+  await saleService.remove(id);
   res.status(StatusCodes.OK).send({ message: 'Sale deleted!' });
   };
 
@@ -39,6 +40,6 @@ module.exports = {
   listByUser,
   find,
   update,
-  deleteSale,
+  remove,
   listBySeller,
 };

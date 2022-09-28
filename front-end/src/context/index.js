@@ -1,36 +1,56 @@
 import PropTypes from 'prop-types';
-import React, { createContext, useLayoutEffect, useMemo, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const AppContext = createContext({});
+
 function AppProvider({ children }) {
-  const userDataStored = window.localStorage.getItem('userData');
+  const userDataStored = window.localStorage.getItem('user');
+  const cartStored = window.localStorage.getItem('cart');
   const [userData, setUserData] = useState(JSON.parse(userDataStored) || {});
-  const contextValue = useMemo(() => ({ userData, setUserData }), [userData]);
+  const [cart, setCart] = useState(JSON.parse(cartStored) || []);
+  const [products, setProducts] = useState([]);
+
+  const contextValue = useMemo(
+    () => ({
+      userData,
+      setUserData,
+      products,
+      setProducts,
+      cart,
+      setCart,
+    }),
+    [userData, products, cart],
+  );
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
-    if (!Object.keys(userData).length) {
-      window.localStorage.removeItem('userData');
-      if (!['/login', '/register'].includes(pathname)) {
+  useEffect(() => {
+    const IsLoginOrRegisterPage = ['/login', '/register'].includes(pathname);
+    if (!Object.keys(userData).length && !IsLoginOrRegisterPage) {
+      window.localStorage.removeItem('user');
+      window.localStorage.removeItem('cart');
+      if (!IsLoginOrRegisterPage) {
         navigate('/login');
       }
-    } else {
-      window.localStorage.setItem('userData', JSON.stringify(userData));
+    } else if (!IsLoginOrRegisterPage) {
+      window.localStorage.setItem('user', JSON.stringify(userData));
+      window.localStorage.setItem('cart', JSON.stringify(cart));
     }
-  }, [userData, pathname, navigate]);
+  }, [userData, cart, pathname, navigate]);
 
   return (
     <AppContext.Provider value={ contextValue }>{children}</AppContext.Provider>
   );
 }
+
 AppProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
   ]).isRequired,
 };
+
 export default AppProvider;
 export { AppContext };

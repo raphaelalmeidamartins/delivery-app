@@ -1,7 +1,12 @@
+const Joi = require('joi');
 const { Sale, User, Product } = require('../database/models');
 const productService = require('./productService');
 const tokenService = require('./tokenService');
 const saleProductService = require('./saleProductService');
+const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+const joiValidator = require('../utils/joiValidator');
+
+const UNAUTHORIZED_MSG = 'You are not authorized to do this.';
 
 const create = async (body, authorization) => {
   const { sellerId, deliveryAddress, deliveryNumber, products } = body;
@@ -12,7 +17,7 @@ const create = async (body, authorization) => {
     sellerId,
     deliveryAddress,
     deliveryNumber,
-    status: 'pending',
+    status: 'Pendente',
     totalPrice,
   });
   await saleProductService.create(products, createdSale.id);
@@ -43,33 +48,36 @@ const listBySeller = async (authorization) => {
     attributes: {
       exclude: [
         'password',
-        'deliveryAddress',
-        'deliveryNumber',
       ],
     },
   });
   return listedSales;
 };
 
-const find = async (id) => {
-  const foundSale = await Sale.findByPk(id, {
+const find = async (id, authorization) => {
+  tokenService.validate(authorization);
+  const foundSale = await Sale.findAll({ 
+    where: { id },
     include: [
-      { model: User, as: 'user', attributes: { exclude: ['password'] } },
       { model: User, as: 'seller', attributes: { exclude: ['password'] } },
-      { model: Product, as: 'products' },
+      { model: Product, as: 'products', through: { attributes: ['quantity'] } },
     ],
   });
   return foundSale;
 };
 
-const update = async (id, body) => {
+const update = async (id, body, authorization) => {
+  const userData = tokenService.validate(authorization);
+  if (userData.role !== 'seller') { 
+    throw new UnauthorizedError(UNAUTHORIZED_MSG);
+  }
   const updatedSale = await Sale.update(body, {
     where: { id },
   });
   return updatedSale;
 };
 
-const deleteSale = async (id) => {
+const remove = async (id) => {
   const deletedSale = await Sale.delete({
     where: { id },
   });
@@ -77,10 +85,17 @@ const deleteSale = async (id) => {
 };
 
 module.exports = {
+  validate: {
+    body: joiValidator(
+      Joi.object({
+        status: Joi.string().valid('Pendente', 'Preparando', 'Em Trânsito', 'Entregue').required(),
+      }),
+    ),
+  },
   create,
   listByUser,
   find,
   update,
-  deleteSale,
+  remove,
   listBySeller,
 };

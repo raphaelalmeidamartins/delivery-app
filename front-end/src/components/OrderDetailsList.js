@@ -31,7 +31,8 @@ function OrderDetailsList({ editable, orderItems }) {
       <span data-testid="customer_checkout__element-order-total-price">
         {`R$ ${orderItems
           ?.reduce((acc, { price, quantity }) => acc + price * quantity, 0)
-          .toFixed(2)}`}
+          .toFixed(2)
+          .replace('.', ',')}`}
       </span>
     </div>
   );

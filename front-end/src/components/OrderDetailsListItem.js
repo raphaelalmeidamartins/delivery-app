@@ -1,15 +1,24 @@
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from '../context';
 
-function OrderDetailsListItem({ index, name, price, quantity, editable }) {
-  const page = editable ? 'order_details' : 'checkout';
+function OrderDetailsListItem({ index, name, price, quantity, id, editable }) {
+  const { cart, setCart } = useContext(AppContext);
+
+  const page = editable ? 'checkout' : 'order_details';
+
+  const handleRemoveItem = () => {
+    const updatedCart = cart.filter((item) => item.id !== id);
+    setCart(updatedCart);
+  };
+
   return (
     <tr>
       <td
         data-testid={ `customer_${page}__element-order-table-item-number-${index}` }
       >
-        {index}
+        {index + 1}
       </td>
       <td data-testid={ `customer_${page}__element-order-table-name-${index}` }>
         {name}
@@ -22,12 +31,12 @@ function OrderDetailsListItem({ index, name, price, quantity, editable }) {
       <td
         data-testid={ `customer_${page}__element-order-table-unit-price-${index}` }
       >
-        {`R$ ${price.toFixed(2)}`}
+        {`R$ ${price.toFixed(2).replace('.', ',')}`}
       </td>
       <td
         data-testid={ `customer_${page}__element-order-table-sub-total-${index}` }
       >
-        {`R$ ${(quantity * price).toFixed(2)}`}
+        {`R$ ${(quantity * price).toFixed(2).replace('.', ',')}`}
       </td>
       {editable && (
         <td
@@ -35,6 +44,7 @@ function OrderDetailsListItem({ index, name, price, quantity, editable }) {
         >
           <Button
             type="button"
+            onClick={ handleRemoveItem }
             data-testid={ `customer_checkout__element-order-table-remove-${index}` }
           >
             Remover
@@ -51,6 +61,7 @@ OrderDetailsListItem.defaultProps = {
 
 OrderDetailsListItem.propTypes = {
   index: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   quantity: PropTypes.number.isRequired,
