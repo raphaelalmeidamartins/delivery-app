@@ -34,7 +34,7 @@ const service = {
   },
   get: {
     async products() {
-      const response = await fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/customer/products`, {
+      const response = await fetch(`http://localhost:${process.env.REACT_APP_BACKEND_PORT}/products`, {
         method: 'GET',
         headers,
       });
