@@ -1,29 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { StatusCodes } from 'http-status-codes';
 import NavBar from '../components/NavBar';
 import OrderCard from '../components/OrderCard';
+import service from '../service';
+import { AppContext } from '../context';
 
 function Orders() {
-  const errMsg = '';
-  const data = [
-    {
-      id: 1,
-      totalPrice: '2.20',
-      saleDate: '2022-09-22T00:01:00.000Z',
-      status: 'Em Trânsito',
-    },
-    {
-      id: 2,
-      totalPrice: '7.50',
-      saleDate: '2022-09-22T00:02:00.000Z',
-      status: 'Entregue',
-    },
-    {
-      id: 3,
-      totalPrice: '2.49',
-      saleDate: '2022-09-22T00:03:00.000Z',
-      status: 'Entregue',
-    },
-  ];
+  const [sales, setSales] = useState([]);
+  const [errMsg, setErrMsg] = useState('');
+
+  const { userData } = useContext(AppContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await service.get.byUser(userData.token);
+      const { status } = response;
+      const data = await response.json();
+
+      if (status === StatusCodes.OK) {
+        setErrMsg('');
+        setSales(data);
+      } else {
+        setErrMsg(data.message);
+      }
+    };
+
+    fetchData();
+  }, [userData.token]);
+
   return (
     <div>
       <NavBar />
@@ -31,13 +35,13 @@ function Orders() {
         {/* Quando o back-end estiver pronto, dar map nos pedidos retornados pela API */}
         {!!errMsg && <p>{errMsg}</p>}
         {!errMsg
-          && data.map(({ id, totalPrice, saleDate, status }) => (
+          && sales.map(({ id, totalPrice, saleDate, status }) => (
             <OrderCard
               key={ id }
               id={ id }
               testId={ id }
               status={ status }
-              date={ saleDate }
+              date={ new Date(saleDate) }
               totalPrice={ Number(totalPrice) }
             />
           ))}
