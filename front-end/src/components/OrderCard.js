@@ -5,17 +5,18 @@ import OrderStatus from './OrderStatus';
 
 function OrderCard({ id, status, date, totalPrice, testId }) {
   const { userData } = useContext(AppContext);
+  const FOUR_NEGATIVE = -4;
   return (
     <section style={ { border: '1px solid black' } }>
       <span data-testid={ `${userData.role}_orders__element-order-id-${testId}` }>
-        {id}
+        {`Pedido ${(`0000${id}`).slice(FOUR_NEGATIVE)}`}
       </span>
       <OrderStatus status={ status } testId={ testId } />
       <div>
         <span
           data-testid={ `${userData.role}_orders__element-order-date-${testId}` }
         >
-          {date}
+          {`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}
         </span>
         <span
           data-testid={ `${userData.role}_orders__element-card-price-${testId}` }
