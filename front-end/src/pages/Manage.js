@@ -1,3 +1,4 @@
+import { InputLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -5,12 +6,11 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import handleManageValidation from '../helpers/handleManageValidation';
 import service from '../service';
-import NavBar from '../components/NavBar';
 
 function Manage() {
   const [username, setUsername] = useState('');
@@ -19,7 +19,7 @@ function Manage() {
   const [role, setRole] = useState('');
   const [errMsg, setErrMsg] = useState('');
 
-  const { setUserData } = useContext(AppContext);
+  const { userData } = useContext(AppContext);
 
   const handleChange = ({ target: { name, value } }) => {
     const loginValues = {
@@ -32,12 +32,10 @@ function Manage() {
     handleManageValidation(username, email, password, role);
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!handleManageValidation(email, password, username, role)) {
-      const response = await service.post.users({
+      const response = await service.post.users(userData.token, {
         name: username,
         email,
         password,
@@ -50,42 +48,38 @@ function Manage() {
       if (status !== StatusCodes.CREATED) {
         setErrMsg(data.message);
       } else {
-        setUserData(data);
-        navigate('/customer/products', { replace: true });
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setRole('');
       }
     }
   };
 
   return (
     <Wrapper>
+      <NavBar />
       <Box component="form" onSubmit={ handleSubmit }>
-        <NavBar />
         <Typography component="h1" variant="h2" gutterBottom>
           Cadastrar novo usuário
         </Typography>
         <FormControl>
-          <Typography component="p" gutterBottom>
-            Nome
-          </Typography>
           <TextField
             variant="filled"
-            label="Nome e sobrenome"
+            label="Nome"
             required
             type="text"
             name="username"
-            placeholder="Seu nome"
+            placeholder="Nome e sobrenome"
             value={ username }
             onChange={ handleChange }
             inputProps={ { 'data-testid': 'admin_manage__input-name' } }
           />
         </FormControl>
         <FormControl>
-          <Typography component="p" gutterBottom>
-            Email
-          </Typography>
           <TextField
             variant="filled"
-            label="seu-email@site.com.br"
+            label="Email"
             required
             type="email"
             name="email"
@@ -96,9 +90,6 @@ function Manage() {
           />
         </FormControl>
         <FormControl>
-          <Typography component="p" gutterBottom>
-            Senha
-          </Typography>
           <TextField
             variant="filled"
             label="Senha"
@@ -112,20 +103,15 @@ function Manage() {
           />
         </FormControl>
         <FormControl>
-          <Typography component="p" gutterBottom>
-            Tipo
-          </Typography>
+          <InputLabel htmlFor="select-role-input">Tipo</InputLabel>
           <select
-            label="Tipo"
-            required
+            id="select-role"
             type="role"
             name="role"
-            placeholder="******"
             value={ role }
             onChange={ handleChange }
-            inputProps={ { 'data-testid': 'admin_manage__select-role' } }
+            data-testid="admin_manage__select-role"
           >
-            <option value="" disabled>Tipo</option>
             <option value="customer">Cliente</option>
             <option value="seller">Vendedor</option>
           </select>
