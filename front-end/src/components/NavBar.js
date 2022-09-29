@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import React, { useContext } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context';
 
 function NavBar() {
@@ -37,19 +37,35 @@ function NavBar() {
                   data-testid="customer_products__element-navbar-link-orders"
                   onClick={ () => navigate('/customer/orders') }
                 >
-                  MEUS PRODUTOS
+                  MEUS PEDIDOS
                 </Button>
               </li>
             </>
           )}
           {userData?.role === 'seller' && (
-            <li data-testid="customer_products__element-navbar-link-orders">
-              <NavLink to="seller/orders">PEDIDOS</NavLink>
+            <li>
+              <Button
+                component="button"
+                type="button"
+                variant="outlined"
+                data-testid="customer_products__element-navbar-link-orders"
+                onClick={ () => navigate('/seller/orders') }
+              >
+                PEDIDOS
+              </Button>
             </li>
           )}
           {userData?.role === 'admin' && (
-            <li data-testid="customer_products__element-navbar-link-orders">
-              GERENCIAR USUÁRIOS
+            <li>
+              <Button
+                component="button"
+                type="button"
+                variant="outlined"
+                data-testid="customer_products__element-navbar-link-orders"
+                onClick={ () => navigate('/seller/orders') }
+              >
+                GERENCIAR USUÁRIOS
+              </Button>
             </li>
           )}
         </ul>
