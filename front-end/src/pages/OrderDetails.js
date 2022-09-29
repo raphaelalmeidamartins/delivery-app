@@ -40,6 +40,13 @@ function OrderDetails() {
     fetchData();
   }, [userData.token, id]);
 
+  const handleUpdateStatus = async (status) => {
+    const response = await service.put.updateSaleById(userData?.token, id, status);
+    if (response.status === StatusCodes.NO_CONTENT) {
+      setSale({ ...sale, status });
+    }
+  };
+
   const FOUR_NEGATIVE = -4;
   const formatDateFromBank = (saleDate) => {
     const TWO_NEGATIVE = -2;
@@ -70,14 +77,17 @@ function OrderDetails() {
                 >
                   {`Pedido ${`0000${id}`.slice(FOUR_NEGATIVE)}`}
                 </span>
-                <span
-                  data-testid={
-                    `${role}_order_details__element-order-details-label-seller-name`
-                  }
-                >
-                  P. Vend:
-                  {sale.seller.name}
-                </span>
+                {role === 'customer'
+                && (
+                  <span
+                    data-testid={
+                      `${role}_order_details__element-order-details-label-seller-name`
+                    }
+                  >
+                    P. Vend:
+                    {sale.seller.name}
+                  </span>
+                )}
                 <span
                   data-testid={
                     `${role}_order_details__element-order-details-label-order-date`
@@ -92,15 +102,44 @@ function OrderDetails() {
                 >
                   {sale.status}
                 </span>
-                <button
-                  data-testid={
-                    `${role}_order_details__button-delivery-check`
-                  }
-                  type="button"
-                  disabled={ !sale.status.includes('Preparando') }
-                >
-                  MARCAR COMO ENTREGUE
-                </button>
+                {role === 'customer'
+                && (
+                  <button
+                    data-testid={
+                      `${role}_order_details__button-delivery-check`
+                    }
+                    type="button"
+                    disabled={ !sale.status.includes('Preparando') }
+                    onClick={ () => handleUpdateStatus('Entregue') }
+                  >
+                    MARCAR COMO ENTREGUE
+                  </button>
+                )}
+                {role === 'seller'
+                && (
+                  <div>
+                    <button
+                      data-testid={
+                        `${role}_order_details__button-preparing-check`
+                      }
+                      type="button"
+                      disabled={ !sale.status.includes('Pendente') }
+                      onClick={ () => handleUpdateStatus('Preparando') }
+                    >
+                      PREPARAR PEDIDO
+                    </button>
+                    <button
+                      data-testid={
+                        `${role}_order_details__button-dispatch-check`
+                      }
+                      type="button"
+                      disabled={ !sale.status.includes('Preparando') }
+                      onClick={ () => handleUpdateStatus('Em Trânsito') }
+                    >
+                      SAIU PARA ENTREGA
+                    </button>
+                  </div>
+                )}
               </div>
             </section>
             <OrderDetailsList orderItems={ items } />
