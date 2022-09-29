@@ -1,16 +1,16 @@
+import { Button } from '@mui/material';
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context';
 
 function NavBar() {
-  const {
-    userData,
-    setUserData,
-  } = useContext(AppContext);
+  const { userData, setUserData } = useContext(AppContext);
 
   const handleLogout = () => {
     setUserData({});
   };
+
+  const navigate = useNavigate();
 
   return (
     <header style={ { border: '1px solid black' } }>
@@ -18,22 +18,54 @@ function NavBar() {
         <ul>
           {userData?.role === 'customer' && (
             <>
-              <li data-testid="customer_products__element-navbar-link-products">
-                <NavLink to="/customer/products">PRODUTOS</NavLink>
+              <li>
+                <Button
+                  component="button"
+                  type="button"
+                  variant="outlined"
+                  data-testid="customer_products__element-navbar-link-products"
+                  onClick={ () => navigate('/customer/products') }
+                >
+                  PRODUTOS
+                </Button>
               </li>
-              <li data-testid="customer_products__element-navbar-link-orders">
-                <NavLink to="/customer/orders">MEUS PEDIDOS</NavLink>
+              <li>
+                <Button
+                  component="button"
+                  type="button"
+                  variant="outlined"
+                  data-testid="customer_products__element-navbar-link-orders"
+                  onClick={ () => navigate('/customer/orders') }
+                >
+                  MEUS PEDIDOS
+                </Button>
               </li>
             </>
           )}
           {userData?.role === 'seller' && (
-            <li data-testid="customer_products__element-navbar-link-orders">
-              <NavLink to="seller/orders">PEDIDOS</NavLink>
+            <li>
+              <Button
+                component="button"
+                type="button"
+                variant="outlined"
+                data-testid="customer_products__element-navbar-link-orders"
+                onClick={ () => navigate('/seller/orders') }
+              >
+                PEDIDOS
+              </Button>
             </li>
           )}
           {userData?.role === 'admin' && (
-            <li data-testid="customer_products__element-navbar-link-orders">
-              GERENCIAR USUÁRIOS
+            <li>
+              <Button
+                component="button"
+                type="button"
+                variant="outlined"
+                data-testid="customer_products__element-navbar-link-orders"
+                onClick={ () => navigate('/seller/orders') }
+              >
+                GERENCIAR USUÁRIOS
+              </Button>
             </li>
           )}
         </ul>

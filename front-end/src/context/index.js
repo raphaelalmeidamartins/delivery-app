@@ -28,7 +28,15 @@ function AppProvider({ children }) {
 
   useEffect(() => {
     const IsLoginOrRegisterPage = ['/login', '/register'].includes(pathname);
-    if (!Object.keys(userData).length && !IsLoginOrRegisterPage) {
+    const isThereUserData = Object.keys(userData).length;
+
+    const homepages = {
+      customer: '/customer/products',
+      seller: '/seller/orders',
+      admin: '/admin/manage',
+    };
+
+    if (!isThereUserData && !IsLoginOrRegisterPage) {
       window.localStorage.removeItem('user');
       window.localStorage.removeItem('cart');
       if (!IsLoginOrRegisterPage) {
@@ -37,6 +45,8 @@ function AppProvider({ children }) {
     } else if (!IsLoginOrRegisterPage) {
       window.localStorage.setItem('user', JSON.stringify(userData));
       window.localStorage.setItem('cart', JSON.stringify(cart));
+    } else if (IsLoginOrRegisterPage) {
+      navigate(homepages[userData.role], { replace: true });
     }
   }, [userData, cart, pathname, navigate]);
 
