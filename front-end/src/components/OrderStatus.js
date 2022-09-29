@@ -6,9 +6,10 @@ function OrderStatus({ status, testId }) {
   const { userData } = useContext(AppContext);
 
   const displayText = {
-    pending: 'PENDENTE',
-    preparing: 'PREPARANDO',
-    delivered: 'ENTREGUE',
+    Pendente: 'Pendente',
+    Preparando: 'Preparando',
+    Entregue: 'Entregue',
+    'Em Trânsito': 'Saiu para entrega',
   };
 
   return (
@@ -23,7 +24,8 @@ function OrderStatus({ status, testId }) {
 
 OrderStatus.propTypes = {
   testId: PropTypes.number.isRequired,
-  status: PropTypes.oneOf(['pending', 'preparing', 'delivered']).isRequired,
+  status: PropTypes.oneOf(['Pendente', 'Preparando', 'Em Trânsito', 'Entregue'])
+    .isRequired,
 };
 
 export default OrderStatus;
