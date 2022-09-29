@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import OrderDetailsListItem from './OrderDetailsListItem';
+import { AppContext } from '../context';
 
 function OrderDetailsList({ editable, orderItems }) {
+  const { userData } = useContext(AppContext);
+  const page = editable ? 'checkout' : 'order_details';
   return (
     <div>
       <table style={ { border: '1px solid black' } }>
@@ -28,7 +31,7 @@ function OrderDetailsList({ editable, orderItems }) {
           ))}
         </tbody>
       </table>
-      <span data-testid="customer_checkout__element-order-total-price">
+      <span data-testid={ `${userData.role}_${page}__element-order-total-price` }>
         {`R$ ${orderItems
           ?.reduce((acc, { price, quantity }) => acc + price * quantity, 0)
           .toFixed(2)

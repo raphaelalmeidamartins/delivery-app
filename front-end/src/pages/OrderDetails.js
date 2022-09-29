@@ -51,6 +51,8 @@ function OrderDetails() {
     return `${day}/${month}/${year}`;
   };
 
+  const { role } = userData;
+
   return (
     <div>
       <NavBar />
@@ -62,40 +64,46 @@ function OrderDetails() {
               <h2>Detalhe do Pedido</h2>
               <div>
                 <span
-                  data-testid={ `${userData.role}
-                  _order_details__element-order-details-label-order-id-${testId}` }
+                  data-testid={
+                    `${role}_order_details__element-order-details-label-order-id`
+                  }
                 >
                   {`Pedido ${`0000${id}`.slice(FOUR_NEGATIVE)}`}
                 </span>
                 <span
-                  data-testid={ `${userData.role}
-                  _order_details__element-order-details-label-seller-name` }
+                  data-testid={
+                    `${role}_order_details__element-order-details-label-seller-name`
+                  }
                 >
                   P. Vend:
                   {sale.seller.name}
                 </span>
                 <span
-                  data-testid={ `${userData.role}
-                 _order_details__element-order-details-label-order-date` }
+                  data-testid={
+                    `${role}_order_details__element-order-details-label-order-date`
+                  }
                 >
                   {formatDateFromBank(sale.saleDate)}
                 </span>
                 <span
-                  data-testid={ `${userData.role}
-                _order_details__element-order-details-label-delivery-status` }
+                  data-testid={
+                    `${role}_order_details__element-order-details-label-delivery-status`
+                  }
                 >
                   {sale.status}
                 </span>
                 <button
-                  data-testid={ `${userData.role}
-                  customer_order_details__button-delivery-check` }
+                  data-testid={
+                    `${role}_order_details__button-delivery-check`
+                  }
                   type="button"
+                  disabled={ !sale.status.includes('Preparando') }
                 >
                   MARCAR COMO ENTREGUE
                 </button>
               </div>
             </section>
-            <OrderDetailsList orderItems={ items } editable />
+            <OrderDetailsList orderItems={ items } />
           </>
         )}
       </main>
