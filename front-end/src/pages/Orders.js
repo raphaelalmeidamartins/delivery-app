@@ -23,7 +23,14 @@ function Orders() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await service.get.byUser(userData.token);
+      let response = {};
+
+      if (userData.role === 'customer') {
+        response = await service.get.byUser(userData.token);
+      } else if (userData.role === 'seller') {
+        response = await service.get.bySeller(userData.token);
+      }
+
       const { status } = response;
       const data = await response.json();
 
@@ -36,7 +43,7 @@ function Orders() {
     };
 
     fetchData();
-  }, [userData.token]);
+  }, [userData.token, userData.role]);
 
   return (
     <div>
