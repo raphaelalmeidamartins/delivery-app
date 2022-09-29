@@ -11,6 +11,16 @@ function Orders() {
 
   const { userData } = useContext(AppContext);
 
+  const formatDateFromBank = (saleDate) => {
+    const TWO_NEGATIVE = -2;
+    const date = new Date(saleDate);
+    const day = date.getDate();
+    const month = `00${date.getMonth() + 1}`.slice(TWO_NEGATIVE);
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await service.get.byUser(userData.token);
@@ -41,7 +51,7 @@ function Orders() {
               id={ id }
               testId={ id }
               status={ status }
-              date={ new Date(saleDate) }
+              date={ formatDateFromBank(saleDate) }
               totalPrice={ Number(totalPrice) }
             />
           ))}
