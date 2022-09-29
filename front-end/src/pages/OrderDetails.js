@@ -19,10 +19,14 @@ function OrderDetails() {
 
       const { status } = response;
       const data = await response.json();
-      const products = data.products
-        .map(({ id: saleId, name, price, SalesProducts: { quantity } }) => ({
-          id: saleId, name, price: +price, quantity,
-        }));
+      const products = data.products.map(
+        ({ id: saleId, name, price, SalesProducts: { quantity } }) => ({
+          id: saleId,
+          name,
+          price: +price,
+          quantity,
+        }),
+      );
 
       if (status === StatusCodes.OK) {
         setErrMsg('');
@@ -36,6 +40,17 @@ function OrderDetails() {
     fetchData();
   }, [userData.token, id]);
 
+  const FOUR_NEGATIVE = -4;
+  const formatDateFromBank = (saleDate) => {
+    const TWO_NEGATIVE = -2;
+    const date = new Date(saleDate);
+    const day = date.getDate();
+    const month = `00${date.getMonth() + 1}`.slice(TWO_NEGATIVE);
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div>
       <NavBar />
@@ -46,33 +61,43 @@ function OrderDetails() {
             <section>
               <h2>Detalhe do Pedido</h2>
               <div>
-                <span>
-                  PEDIDO
-                  {' '}
-                  {id}
+                <span
+                  data-testid={ `${userData.role}
+                  _order_details__element-order-details-label-order-id-${testId}` }
+                >
+                  {`Pedido ${`0000${id}`.slice(FOUR_NEGATIVE)}`}
                 </span>
-                <span>
-                  P. Vendedora
-                  {' '}
-                  {sale.seller.name }
+                <span
+                  data-testid={ `${userData.role}
+                  _order_details__element-order-details-label-seller-name` }
+                >
+                  P. Vend:
+                  {sale.seller.name}
                 </span>
-                <span>
-                  {' '}
-                  {sale.date }
+                <span
+                  data-testid={ `${userData.role}
+                 _order_details__element-order-details-label-order-date` }
+                >
+                  {formatDateFromBank(sale.saleDate)}
                 </span>
-                <span>
-                  {' '}
-                  {sale.status }
+                <span
+                  data-testid={ `${userData.role}
+                _order_details__element-order-details-label-delivery-status` }
+                >
+                  {sale.status}
                 </span>
-                <button type="submit">MARCAR COMO ENTREGUE</button>
+                <button
+                  data-testid={ `${userData.role}
+                  customer_order_details__button-delivery-check` }
+                  type="button"
+                >
+                  MARCAR COMO ENTREGUE
+                </button>
               </div>
             </section>
-            <OrderDetailsList
-              orderItems={ items }
-              editable
-            />
-          </>)}
-
+            <OrderDetailsList orderItems={ items } editable />
+          </>
+        )}
       </main>
     </div>
   );
