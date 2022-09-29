@@ -17,6 +17,17 @@ const service = {
       );
       return response;
     },
+    async users(Authorization, userData) {
+      const response = await fetch(
+        `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/users`,
+        {
+          method: 'POST',
+          headers: { ...headers, Authorization },
+          body: JSON.stringify(userData),
+        },
+      );
+      return response;
+    },
     async customers(registerData) {
       const response = await fetch(
         `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/customers`,

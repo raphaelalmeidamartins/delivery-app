@@ -16,13 +16,13 @@ module.exports = {
         name: Joi.string().min(12).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
-        role: Joi.string().optional(),
+        role: Joi.string().valid('seller', 'customer').required(),
       }),
     ),
     credentials(authorization) {
       const { role } = tokenService.validate(authorization);
 
-      if (role !== 'admin') {
+      if (role !== 'administrator') {
         throw UnauthorizedError(UNAUTHORIZED_MSG);
       }
     },
@@ -31,20 +31,19 @@ module.exports = {
     const user = await User.findOne({ where: { email } });
     if (user) throw new ConflictError(ALREADY_REGISTERED_MSG);
   },
-  async create(authorization, data) {
-    this.validate.credentials(authorization);
+  async create(data) {
     await this.exists(data.email);
 
-    const newUser = await User.create({
+    const newCustomer = await User.create({
       ...data,
-      role: 'customer',
       password: generateEncryptedPassword(data.password),
+      role: data.role,
     });
 
     return {
-      name: newUser.name,
-      email: newUser.email,
-      role: newUser.role,
+      name: newCustomer.name,
+      email: newCustomer.email,
+      role: newCustomer.role,
     };
   },
   async list(authorization) {

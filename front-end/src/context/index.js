@@ -33,7 +33,7 @@ function AppProvider({ children }) {
     const homepages = {
       customer: '/customer/products',
       seller: '/seller/orders',
-      admin: '/admin/manage',
+      administrator: '/admin/manage',
     };
 
     if (!isThereUserData && !IsLoginOrRegisterPage) {

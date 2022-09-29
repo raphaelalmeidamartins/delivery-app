@@ -26,8 +26,8 @@ module.exports = {
 
     const newCustomer = await User.create({
       ...data,
-      role: 'customer',
       password: generateEncryptedPassword(data.password),
+      role: 'customer',
     });
 
     const token = await tokenService.create({ id: newCustomer.id, role: newCustomer.role });
