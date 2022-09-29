@@ -9,7 +9,7 @@ function OrderStatus({ status, testId }) {
     Pendente: 'Pendente',
     Preparando: 'Preparando',
     Entregue: 'Entregue',
-    'Em Trânsito': 'Saiu para entrega',
+    'Em Trânsito': 'Em Trânsito',
   };
 
   return (

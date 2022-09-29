@@ -109,7 +109,7 @@ function OrderDetails() {
                       `${role}_order_details__button-delivery-check`
                     }
                     type="button"
-                    disabled={ !sale.status.includes('Preparando') }
+                    disabled={ !sale.status.includes('Em Trânsito') }
                     onClick={ () => handleUpdateStatus('Entregue') }
                   >
                     MARCAR COMO ENTREGUE

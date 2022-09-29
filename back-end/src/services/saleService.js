@@ -3,10 +3,7 @@ const { Sale, User, Product } = require('../database/models');
 const productService = require('./productService');
 const tokenService = require('./tokenService');
 const saleProductService = require('./saleProductService');
-const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const joiValidator = require('../utils/joiValidator');
-
-const UNAUTHORIZED_MSG = 'You are not authorized to do this.';
 
 const create = async (body, authorization) => {
   const { sellerId, deliveryAddress, deliveryNumber, products } = body;
@@ -67,10 +64,7 @@ const find = async (id, authorization) => {
 };
 
 const update = async (id, body, authorization) => {
-  const userData = tokenService.validate(authorization);
-  if (userData.role !== 'seller') { 
-    throw new UnauthorizedError(UNAUTHORIZED_MSG);
-  }
+  tokenService.validate(authorization);
   const updatedSale = await Sale.update(body, {
     where: { id },
   });
