@@ -19,7 +19,7 @@ function Checkout() {
   const [address, setAddress] = useState('');
   const [addressNumber, setAddressNumber] = useState('');
 
-  const { userData, cart } = useContext(AppContext);
+  const { userData, cart, setCart } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -66,6 +66,7 @@ function Checkout() {
 
     // Alterar o conteúdo do if/else
     if (status === StatusCodes.CREATED) {
+      setCart([]);
       navigate(`/customer/orders/${data.saleId}`);
     } else {
       setErrMsg(errMsg);
