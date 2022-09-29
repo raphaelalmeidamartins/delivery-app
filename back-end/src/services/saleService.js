@@ -56,7 +56,7 @@ const listBySeller = async (authorization) => {
 
 const find = async (id, authorization) => {
   tokenService.validate(authorization);
-  const foundSale = await Sale.findAll({ 
+  const foundSale = await Sale.findOne({ 
     where: { id },
     include: [
       { model: User, as: 'seller', attributes: { exclude: ['password'] } },

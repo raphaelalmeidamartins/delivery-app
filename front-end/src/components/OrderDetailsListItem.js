@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { AppContext } from '../context';
 
 function OrderDetailsListItem({ index, name, price, quantity, id, editable }) {
-  const { cart, setCart } = useContext(AppContext);
+  const { cart, setCart, userData } = useContext(AppContext);
 
   const page = editable ? 'checkout' : 'order_details';
 
@@ -16,36 +16,42 @@ function OrderDetailsListItem({ index, name, price, quantity, id, editable }) {
   return (
     <tr>
       <td
-        data-testid={ `customer_${page}__element-order-table-item-number-${index}` }
+        data-testid={
+          `${userData.role}_${page}__element-order-table-item-number-${index}`
+        }
       >
         {index + 1}
       </td>
-      <td data-testid={ `customer_${page}__element-order-table-name-${index}` }>
+      <td data-testid={ `${userData.role}_${page}__element-order-table-name-${index}` }>
         {name}
       </td>
       <td
-        data-testid={ `customer_${page}__element-order-table-quantity-${index}` }
+        data-testid={ `${userData.role}_${page}__element-order-table-quantity-${index}` }
       >
         {quantity}
       </td>
       <td
-        data-testid={ `customer_${page}__element-order-table-unit-price-${index}` }
+        data-testid={
+          `${userData.role}_${page}__element-order-table-unit-price-${index}`
+        }
       >
         {`R$ ${price.toFixed(2).replace('.', ',')}`}
       </td>
       <td
-        data-testid={ `customer_${page}__element-order-table-sub-total-${index}` }
+        data-testid={ `${userData.role}_${page}__element-order-table-sub-total-${index}` }
       >
         {`R$ ${(quantity * price).toFixed(2).replace('.', ',')}`}
       </td>
       {editable && (
         <td
-          data-testid={ `customer_${page}__element-order-table-remove-${index}` }
+          data-testid={ `${userData.role}_${page}__element-order-table-remove-${index}` }
         >
           <Button
             type="button"
             onClick={ handleRemoveItem }
-            data-testid={ `customer_checkout__element-order-table-remove-${index}` }
+            data-testid={
+              `${userData.role}_${page}__element-order-table-remove-${index}`
+            }
           >
             Remover
           </Button>

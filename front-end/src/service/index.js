@@ -104,12 +104,13 @@ const service = {
     },
   },
   put: {
-    async updateSaleById(Authorization, id) {
+    async updateSaleById(Authorization, id, status) {
       const response = await fetch(
         `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/sales/${id}`,
         {
           method: 'PUT',
           headers: { ...headers, Authorization },
+          body: JSON.stringify({ status }),
         },
       );
       return response;
