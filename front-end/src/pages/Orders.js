@@ -52,16 +52,26 @@ function Orders() {
         {/* Quando o back-end estiver pronto, dar map nos pedidos retornados pela API */}
         {!!errMsg && <p>{errMsg}</p>}
         {!errMsg
-          && sales.map(({ id, totalPrice, saleDate, status }) => (
-            <OrderCard
-              key={ id }
-              id={ id }
-              testId={ id }
-              status={ status }
-              date={ formatDateFromBank(saleDate) }
-              totalPrice={ Number(totalPrice) }
-            />
-          ))}
+          && sales.map(
+            ({
+              id,
+              totalPrice,
+              saleDate,
+              status,
+              deliveryAddress,
+              deliveryNumber,
+            }) => (
+              <OrderCard
+                key={ id }
+                id={ id }
+                testId={ id }
+                status={ status }
+                date={ formatDateFromBank(saleDate) }
+                totalPrice={ Number(totalPrice) }
+                fullAddress={ `${deliveryAddress}, ${deliveryNumber}` }
+              />
+            ),
+          )}
       </main>
     </div>
   );

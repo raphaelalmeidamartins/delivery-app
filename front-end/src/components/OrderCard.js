@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context';
 import OrderStatus from './OrderStatus';
 
-function OrderCard({ id, status, date, totalPrice, testId }) {
+function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
   const { userData } = useContext(AppContext);
   const FOUR_NEGATIVE = -4;
 
@@ -38,6 +38,11 @@ function OrderCard({ id, status, date, totalPrice, testId }) {
           >
             {`${totalPrice.toFixed(2).replace('.', ',')}`}
           </span>
+          <span
+            data-testid={ `${userData.role}_orders__element-card-address-${testId}` }
+          >
+            {userData.role === 'seller' && fullAddress}
+          </span>
         </div>
       </button>
     </section>
@@ -51,6 +56,7 @@ OrderCard.propTypes = {
     .isRequired,
   totalPrice: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
+  fullAddress: PropTypes.string.isRequired,
 };
 
 export default OrderCard;
