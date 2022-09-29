@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { User/* , Sale, SalesProduct, sequelize */ } = require('../database/models');
+const { User, Sale, SalesProduct, sequelize } = require('../database/models');
 const ConflictError = require('../utils/errors/ConflictError');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const { generateEncryptedPassword } = require('../utils/generateEncryptedPassword');
@@ -16,13 +16,13 @@ module.exports = {
         name: Joi.string().min(12).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
-        role: Joi.string().valid('seller', 'customer').optional(),
+        role: Joi.string().valid('seller', 'customer').required(),
       }),
     ),
     credentials(authorization) {
       const { role } = tokenService.validate(authorization);
 
-      if (role !== 'admin') {
+      if (role !== 'administrator') {
         throw UnauthorizedError(UNAUTHORIZED_MSG);
       }
     },
@@ -36,37 +36,34 @@ module.exports = {
 
     const newCustomer = await User.create({
       ...data,
-      role: data.role,
       password: generateEncryptedPassword(data.password),
+      role: data.role,
     });
-
-    const token = await tokenService.create({ id: newCustomer.id, role: newCustomer.role });
 
     return {
       name: newCustomer.name,
       email: newCustomer.email,
       role: newCustomer.role,
-      token,
     };
   },
-  // async list(authorization) {
-  //   this.validate.credentials(authorization);
+  async list(authorization) {
+    this.validate.credentials(authorization);
 
-  //   const users = await User.findAll({ attributes: { exclude: ['password'] } });
-  //   return users;
-  // },
-  // async delete(authorization, userId) {
-  //   this.validate.credentials(authorization);
+    const users = await User.findAll({ attributes: { exclude: ['password'] } });
+    return users;
+  },
+  async delete(authorization, userId) {
+    this.validate.credentials(authorization);
 
-  //   const { sales } = await Sale.findAll({ where: { userId } });
+    const { sales } = await Sale.findAll({ where: { userId } });
 
-  //   sequelize.transaction(async (transaction) => {
-  //     const deleteLinks = sales.map(({ id: saleId }) =>
-  //       SalesProduct.destroy({ where: { saleId } }, { transaction }));
-  //     await Promise.all(deleteLinks);
+    sequelize.transaction(async (transaction) => {
+      const deleteLinks = sales.map(({ id: saleId }) =>
+        SalesProduct.destroy({ where: { saleId } }, { transaction }));
+      await Promise.all(deleteLinks);
 
-  //     const deleteSales = sales.map(({ id }) => Sale.destroy({ where: { id } }, { transaction }));
-  //     await Promise.all(deleteSales);
-  //   });
-  // },
+      const deleteSales = sales.map(({ id }) => Sale.destroy({ where: { id } }, { transaction }));
+      await Promise.all(deleteSales);
+    });
+  },
 };

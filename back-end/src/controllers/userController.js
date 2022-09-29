@@ -3,7 +3,7 @@ const userService = require('../services/userService');
 
 module.exports = {
   async create(req, res) {
-    const data = await userService.validate.body(req.headers.authorization, req.body);
+    const data = await userService.validate.body(req.body);
     const newUser = await userService.create(data);
     res.status(StatusCodes.CREATED).json(newUser);
   },
