@@ -14,7 +14,7 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
     <section style={ { border: '1px solid black' } }>
       <button
         type="button"
-        onClick={ () => navigate(`/${userData.role}/orders/${orderId}`) }
+        onClick={ () => navigate(`/${userData.role}/orders/${id}`) }
       >
         <span
           data-testid={ `${userData.role}_orders__element-order-id-${testId}` }
