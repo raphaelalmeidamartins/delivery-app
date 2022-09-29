@@ -10,17 +10,12 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
 
   const navigate = useNavigate();
 
-  const navigateAccordingToRole = (orderId) => {
-    if (userData.role === 'customer') {
-      navigate(`/customer/orders/${orderId}`);
-    } else if (userData.role === 'seller') {
-      navigate(`/seller/orders/${orderId}`);
-    }
-  };
-
   return (
     <section style={ { border: '1px solid black' } }>
-      <button type="button" onClick={ () => navigateAccordingToRole(id) }>
+      <button
+        type="button"
+        onClick={ () => navigate(`/${userData.role}/orders/${orderId}`) }
+      >
         <span
           data-testid={ `${userData.role}_orders__element-order-id-${testId}` }
         >
