@@ -52,6 +52,16 @@ const service = {
     },
   },
   get: {
+    async users(Authorization) {
+      const response = await fetch(
+        `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/users`,
+        {
+          method: 'GET',
+          headers: { ...headers, Authorization },
+        },
+      );
+      return response;
+    },
     async products() {
       const response = await fetch(
         `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/products`,
@@ -120,6 +130,16 @@ const service = {
     async deleteSaleById(Authorization, id) {
       const response = await fetch(
         `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/sales/${id}`,
+        {
+          method: 'DELETE',
+          headers: { ...headers, Authorization },
+        },
+      );
+      return response;
+    },
+    async deleteUser(Authorization, id) {
+      const response = await fetch(
+        `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/users/${id}`,
         {
           method: 'DELETE',
           headers: { ...headers, Authorization },
