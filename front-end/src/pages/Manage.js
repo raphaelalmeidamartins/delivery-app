@@ -5,8 +5,9 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { StatusCodes } from 'http-status-codes';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
+import UserDetailsList from '../components/UserDetailsList';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import handleManageValidation from '../helpers/handleManageValidation';
@@ -18,8 +19,24 @@ function Manage() {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [users, setUsers] = useState([]);
 
   const { userData } = useContext(AppContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await service.get.users(userData.token);
+
+      const { status } = response;
+      const data = await response.json();
+
+      if (status === StatusCodes.OK) {
+        setUsers(data);
+      }
+    };
+
+    fetchData();
+  }, [userData.token, users]);
 
   const handleChange = ({ target: { name, value } }) => {
     const loginValues = {
@@ -127,6 +144,7 @@ function Manage() {
           CADASTRAR
         </Button>
       </Box>
+      <UserDetailsList users={ users } />
       {!!errMsg && (
         <Typography
           data-testid="admin_manage__element-invalid-register"
