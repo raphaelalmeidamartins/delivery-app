@@ -55,8 +55,7 @@ module.exports = {
   async delete(authorization, userId) {
     this.validate.credentials(authorization);
 
-    const { sales } = await Sale.findAll({ where: { userId } });
-
+    const sales = await Sale.findAll({ where: { userId } });
     sequelize.transaction(async (transaction) => {
       const deleteLinks = sales.map(({ id: saleId }) =>
         SalesProduct.destroy({ where: { saleId } }, { transaction }));
@@ -64,6 +63,8 @@ module.exports = {
 
       const deleteSales = sales.map(({ id }) => Sale.destroy({ where: { id } }, { transaction }));
       await Promise.all(deleteSales);
+
+      await User.destroy({ where: { id: userId } }, { transaction });
     });
   },
 };
