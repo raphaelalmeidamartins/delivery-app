@@ -49,7 +49,8 @@ module.exports = {
   async list(authorization) {
     this.validate.credentials(authorization);
 
-    const users = await User.findAll({ attributes: { exclude: ['password'] } });
+    const users = await User
+    .findAll({ where: { role: ['seller', 'customer'] }, attributes: { exclude: ['password'] } });
     return users;
   },
   async delete(authorization, userId) {
