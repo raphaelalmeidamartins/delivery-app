@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import OrderDetailsList from '../components/OrderDetailsList';
+import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import service from '../service';
 
@@ -76,9 +77,14 @@ function Checkout() {
   return (
     <>
       <Header />
-      <main>
+      <Wrapper>
         {!!errMsg && <p>{errMsg}</p>}
-        {!errMsg && (
+        {!errMsg && !cart.length && (
+          <Typography variant="h6" align="center" paragraph>
+            Seu carrinho está vazio
+          </Typography>
+        )}
+        {!errMsg && !!cart.length && (
           <>
             <section>
               <Typography component="h2" variant="h2" gutterBottom>
@@ -149,7 +155,7 @@ function Checkout() {
             </Box>
           </>
         )}
-      </main>
+      </Wrapper>
     </>
   );
 }
