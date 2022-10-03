@@ -5,8 +5,8 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { StatusCodes } from 'http-status-codes';
-import React, { useContext, useState, useEffect } from 'react';
-import NavBar from '../components/NavBar';
+import React, { useContext, useEffect, useState } from 'react';
+import Header from '../components/Header';
 import UserDetailsList from '../components/UserDetailsList';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
@@ -75,7 +75,7 @@ function Manage() {
 
   return (
     <Wrapper>
-      <NavBar />
+      <Header />
       <Box component="form" onSubmit={ handleSubmit }>
         <Typography component="h1" variant="h2" gutterBottom>
           Cadastrar novo usuário

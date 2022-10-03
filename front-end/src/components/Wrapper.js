@@ -6,7 +6,7 @@ function Wrapper({ children }) {
   return (
     <Container
       component="main"
-      sx={ { padding: '70px 0', position: 'relative' } }
+      sx={ { paddingTop: '140px', paddingBottom: '70px', position: 'relative' } }
     >
       {children}
     </Container>

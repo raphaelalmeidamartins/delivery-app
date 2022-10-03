@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../components/NavBar';
+import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
@@ -37,7 +37,7 @@ function Products() {
 
   return (
     <>
-      <NavBar />
+      <Header />
       <Wrapper>
         <Button
           component="button"

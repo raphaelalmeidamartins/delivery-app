@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
 import { StatusCodes } from 'http-status-codes';
-import NavBar from '../components/NavBar';
+import React, { useContext, useEffect, useState } from 'react';
+import Header from '../components/Header';
 import OrderCard from '../components/OrderCard';
-import service from '../service';
 import { AppContext } from '../context';
+import service from '../service';
 
 function Orders() {
   const [sales, setSales] = useState([]);
@@ -47,7 +47,7 @@ function Orders() {
 
   return (
     <div>
-      <NavBar />
+      <Header />
       <main>
         {/* Quando o back-end estiver pronto, dar map nos pedidos retornados pela API */}
         {!!errMsg && <p>{errMsg}</p>}

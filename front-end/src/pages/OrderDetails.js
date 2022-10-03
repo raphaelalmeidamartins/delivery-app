@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import NavBar from '../components/NavBar';
+import Header from '../components/Header';
 import OrderDetailsList from '../components/OrderDetailsList';
 import { AppContext } from '../context';
 import service from '../service';
@@ -62,7 +62,7 @@ function OrderDetails() {
 
   return (
     <div>
-      <NavBar />
+      <Header />
       <main>
         {!!errMsg && <p>{errMsg}</p>}
         {!errMsg && !!Object.keys(sale).length && (
