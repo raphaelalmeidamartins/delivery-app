@@ -1,9 +1,11 @@
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
+import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import service from '../service';
 
@@ -34,40 +36,63 @@ function Products() {
   const handleClick = () => navigate('/customer/checkout');
 
   return (
-    <div>
+    <>
       <NavBar />
-      <Button
-        component="button"
-        type="button"
-        variant="contained"
-        data-testid="customer_products__button-cart"
-        onClick={ handleClick }
-        disabled={ cart.length === 0 }
-      >
-        Ver Carrinho: R$
-        {' '}
-        <span data-testid="customer_products__checkout-bottom-value">
-          {cart
-            .reduce((acc, { price, quantity }) => acc + price * quantity, 0)
-            .toFixed(2)
-            .replace('.', ',')}
-        </span>
-      </Button>
-      <main>
-        {!!errMsg && <p>{errMsg}</p>}
-        {!errMsg
-          && products.map((product, index) => (
-            <ProductCard
-              key={ product.id }
-              id={ product.id }
-              index={ index }
-              name={ product.name }
-              price={ Number(product.price) }
-              thumbnail={ product.url_image }
-            />
-          ))}
-      </main>
-    </div>
+      <Wrapper>
+        <Button
+          component="button"
+          type="button"
+          variant="contained"
+          data-testid="customer_products__button-cart"
+          onClick={ handleClick }
+          disabled={ cart.length === 0 }
+          size="large"
+          sx={ {
+            alignItems: 'center',
+            bottom: '24px',
+            display: 'flex',
+            position: 'fixed',
+            right: '24px',
+            zIndex: 10,
+          } }
+        >
+          Ver Carrinho:
+          <span
+            data-testid="customer_products__checkout-bottom-value"
+            style={ {
+              marginLeft: '8px',
+              fontSize: '20px',
+              fontWeight: 700,
+            } }
+          >
+            {`R$ ${cart
+              .reduce((acc, { price, quantity }) => acc + price * quantity, 0)
+              .toFixed(2)
+              .replace('.', ',')}`}
+          </span>
+        </Button>
+        <Grid
+          container
+          spacing={ { xs: 3, sm: 3, md: 3 } }
+          columns={ { xs: 4, sm: 8, md: 12 } }
+          component="main"
+        >
+          {!!errMsg && <p>{errMsg}</p>}
+          {!errMsg
+            && products.map((product, index) => (
+              <Grid item xs={ 6 } sm={ 4 } md={ 3 } key={ product.id }>
+                <ProductCard
+                  id={ product.id }
+                  index={ index }
+                  name={ product.name }
+                  price={ Number(product.price) }
+                  thumbnail={ product.url_image }
+                />
+              </Grid>
+            ))}
+        </Grid>
+      </Wrapper>
+    </>
   );
 }
 

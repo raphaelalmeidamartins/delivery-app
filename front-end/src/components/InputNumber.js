@@ -1,5 +1,7 @@
+import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { AppContext } from '../context';
 
 function InputNumber({ product, id }) {
@@ -61,27 +63,30 @@ function InputNumber({ product, id }) {
   };
 
   return (
-    <div>
-      <button
+    <div style={ { display: 'flex' } }>
+      <IconButton
         data-testid={ `customer_products__button-card-rm-item-${id}` }
         type="button"
         onClick={ handleDecrement }
+        sx={ { border: '1px solid black', borderRadius: '12px 0 0 12px' } }
       >
-        -
-      </button>
+        <AiOutlineMinus />
+      </IconButton>
       <input
         type="text"
         value={ quantityState }
         onChange={ handleChange }
         data-testid={ `customer_products__input-card-quantity-${id}` }
+        style={ { fontSize: '16px', textAlign: 'center', width: '80px' } }
       />
-      <button
+      <IconButton
         data-testid={ `customer_products__button-card-add-item-${id}` }
         type="button"
         onClick={ handleIncrement }
+        sx={ { border: '1px solid black', borderRadius: '0 12px 12px 0' } }
       >
-        +
-      </button>
+        <AiOutlinePlus />
+      </IconButton>
     </div>
   );
 }

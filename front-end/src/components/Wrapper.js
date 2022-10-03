@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 function Wrapper({ children }) {
-  return <Container component="section">{children}</Container>;
+  return (
+    <Container
+      component="main"
+      sx={ { padding: '70px 0', position: 'relative' } }
+    >
+      {children}
+    </Container>
+  );
 }
 
 Wrapper.propTypes = {

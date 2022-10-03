@@ -56,7 +56,17 @@ function Login() {
 
   return (
     <Wrapper>
-      <Box component="form" onSubmit={ handleSubmit }>
+      <Box
+        component="form"
+        onSubmit={ handleSubmit }
+        sx={ {
+          border: '1px solid black',
+          display: 'flex',
+          flexFlow: 'column nowrap',
+          maxWidth: '600px',
+          margin: 'auto',
+        } }
+      >
         <Typography component="h1" variant="h2" gutterBottom>
           Login
         </Typography>
@@ -90,6 +100,7 @@ function Login() {
           component="button"
           type="submit"
           variant="contained"
+          size="large"
           disabled={ handleUserValidation(email, password) }
           data-testid="common_login__button-login"
           onSubmit={ handleSubmit }
@@ -100,6 +111,7 @@ function Login() {
           component="button"
           type="button"
           variant="outlined"
+          size="large"
           data-testid="common_login__button-register"
           onClick={ handleRegister }
         >
