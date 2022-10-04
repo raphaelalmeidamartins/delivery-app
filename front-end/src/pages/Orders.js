@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import OrderCard from '../components/OrderCard';
+import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import service from '../service';
 
@@ -46,12 +47,11 @@ function Orders() {
   }, [userData.token, userData.role]);
 
   return (
-    <div>
+    <Wrapper>
       <Header />
-      <main>
-        {/* Quando o back-end estiver pronto, dar map nos pedidos retornados pela API */}
-        {!!errMsg && <p>{errMsg}</p>}
-        {!errMsg
+      {/* Quando o back-end estiver pronto, dar map nos pedidos retornados pela API */}
+      {!!errMsg && <p>{errMsg}</p>}
+      {!errMsg
           && sales.map(
             ({
               id,
@@ -72,8 +72,7 @@ function Orders() {
               />
             ),
           )}
-      </main>
-    </div>
+    </Wrapper>
   );
 }
 

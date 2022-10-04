@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import OrderDetailsList from '../components/OrderDetailsList';
+import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import service from '../service';
 
@@ -61,23 +62,22 @@ function OrderDetails() {
   const { role } = userData;
 
   return (
-    <div>
+    <Wrapper>
       <Header />
-      <main>
-        {!!errMsg && <p>{errMsg}</p>}
-        {!errMsg && !!Object.keys(sale).length && (
-          <>
-            <section>
-              <h2>Detalhe do Pedido</h2>
-              <div>
-                <span
-                  data-testid={
-                    `${role}_order_details__element-order-details-label-order-id`
-                  }
-                >
-                  {`Pedido ${`0000${id}`.slice(FOUR_NEGATIVE)}`}
-                </span>
-                {role === 'customer'
+      {!!errMsg && <p>{errMsg}</p>}
+      {!errMsg && !!Object.keys(sale).length && (
+        <>
+          <section>
+            <h2>Detalhe do Pedido</h2>
+            <div>
+              <span
+                data-testid={
+                  `${role}_order_details__element-order-details-label-order-id`
+                }
+              >
+                {`Pedido ${`0000${id}`.slice(FOUR_NEGATIVE)}`}
+              </span>
+              {role === 'customer'
                 && (
                   <span
                     data-testid={
@@ -88,21 +88,21 @@ function OrderDetails() {
                     {sale.seller.name}
                   </span>
                 )}
-                <span
-                  data-testid={
-                    `${role}_order_details__element-order-details-label-order-date`
-                  }
-                >
-                  {formatDateFromBank(sale.saleDate)}
-                </span>
-                <span
-                  data-testid={
-                    `${role}_order_details__element-order-details-label-delivery-status`
-                  }
-                >
-                  {sale.status}
-                </span>
-                {role === 'customer'
+              <span
+                data-testid={
+                  `${role}_order_details__element-order-details-label-order-date`
+                }
+              >
+                {formatDateFromBank(sale.saleDate)}
+              </span>
+              <span
+                data-testid={
+                  `${role}_order_details__element-order-details-label-delivery-status`
+                }
+              >
+                {sale.status}
+              </span>
+              {role === 'customer'
                 && (
                   <button
                     data-testid={
@@ -115,7 +115,7 @@ function OrderDetails() {
                     MARCAR COMO ENTREGUE
                   </button>
                 )}
-                {role === 'seller'
+              {role === 'seller'
                 && (
                   <div>
                     <button
@@ -140,13 +140,12 @@ function OrderDetails() {
                     </button>
                   </div>
                 )}
-              </div>
-            </section>
-            <OrderDetailsList orderItems={ items } />
-          </>
-        )}
-      </main>
-    </div>
+            </div>
+          </section>
+          <OrderDetailsList orderItems={ items } />
+        </>
+      )}
+    </Wrapper>
   );
 }
 
