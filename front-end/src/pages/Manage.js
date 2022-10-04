@@ -1,11 +1,11 @@
-import { InputLabel } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Grid as Box, InputLabel, MenuItem, Select } from '@mui/material';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
+import { FaUser } from 'react-icons/fa';
 import Header from '../components/Header';
 import UserDetailsList from '../components/UserDetailsList';
 import Wrapper from '../components/Wrapper';
@@ -73,16 +73,28 @@ function Manage() {
     }
   };
 
+  const INPUT_SPACING = '24px';
+
   return (
     <Wrapper>
       <Header />
-      <Box component="form" onSubmit={ handleSubmit }>
-        <Typography component="h1" variant="h2" gutterBottom>
+      <Box
+        component="form"
+        onSubmit={ handleSubmit }
+        sx={ {
+          display: 'flex',
+          flexFlow: 'column nowrap',
+          marginBottom: '48px',
+        } }
+      >
+        <Typography component="h2" variant="h4" gutterBottom>
+          <FaUser />
+          {' '}
           Cadastrar novo usuário
         </Typography>
-        <FormControl>
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Nome"
             required
             type="text"
@@ -93,9 +105,9 @@ function Manage() {
             inputProps={ { 'data-testid': 'admin_manage__input-name' } }
           />
         </FormControl>
-        <FormControl>
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Email"
             required
             type="email"
@@ -106,9 +118,9 @@ function Manage() {
             inputProps={ { 'data-testid': 'admin_manage__input-email' } }
           />
         </FormControl>
-        <FormControl>
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Senha"
             required
             type="password"
@@ -119,19 +131,28 @@ function Manage() {
             inputProps={ { 'data-testid': 'admin_manage__input-password' } }
           />
         </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="select-role-input">Tipo</InputLabel>
-          <select
-            id="select-role"
-            type="role"
-            name="role"
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
+          <InputLabel id="seller-select-label">
+            P. Vendedora Responsável
+          </InputLabel>
+          <Select
+            id="seller-select"
+            name="seller"
+            labelId="seller-select-label"
             value={ role }
+            label="P. Vendedora Responsável"
             onChange={ handleChange }
-            data-testid="admin_manage__select-role"
+            inputProps={ {
+              'data-testid': 'customer_checkout__select-seller',
+            } }
           >
-            <option value="customer">Cliente</option>
-            <option value="seller">Vendedor</option>
-          </select>
+            <MenuItem value="customer">
+              Cliente
+            </MenuItem>
+            <MenuItem value="seller">
+              Vendedor
+            </MenuItem>
+          </Select>
         </FormControl>
         <Button
           component="button"

@@ -1,4 +1,5 @@
-import Button from '@mui/material/Button';
+import { Delete } from '@mui/icons-material';
+import { IconButton, TableCell, TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { AppContext } from '../context';
@@ -11,43 +12,46 @@ function UserDetailsListItem({ index, name, email, role, id }) {
   };
 
   return (
-    <tr>
-      <td
+    <TableRow>
+      <TableCell
         data-testid={
           `admin_manage__element-user-table-item-number-${index}`
         }
       >
         {index + 1}
-      </td>
-      <td
+      </TableCell>
+      <TableCell
         data-testid={ `admin_manage__element-user-table-name-${index}` }
       >
         {name}
-      </td>
-      <td
+      </TableCell>
+      <TableCell
         data-testid={ `admin_manage__element-user-table-email-${index}` }
       >
         {email}
-      </td>
-      <td
+      </TableCell>
+      <TableCell
         data-testid={
           `admin_manage__element-user-table-role-${index}`
         }
       >
         {role}
-      </td>
-      <td
+      </TableCell>
+      <TableCell
         data-testid={ `admin_manage__element-user-table-remove-${index}` }
       >
-        <Button
-          type="button"
+        <IconButton
+          size="large"
+          aria-haspopup="true"
           onClick={ () => handleRemoveUser(id) }
+          color="inherit"
           data-testid={ `admin_manage__element-user-table-remove-${index}` }
+          title="Remover item"
         >
-          Remover
-        </Button>
-      </td>
-    </tr>
+          <Delete />
+        </IconButton>
+      </TableCell>
+    </TableRow>
   );
 }
 

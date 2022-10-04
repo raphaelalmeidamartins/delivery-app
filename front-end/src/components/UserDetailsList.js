@@ -1,27 +1,61 @@
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  useTheme,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import UserDetailsListItem from './UserDetailsListItem';
 
 function UserDetailsList({ users }) {
+  const DISPLAY_TABLE_CELL = 'table-cell';
+  const { palette } = useTheme();
+
   return (
-    <div>
-      <table style={ { border: '1px solid black' } }>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Tipo</th>
-            <th>Excluir</th>
-          </tr>
-        </thead>
-        <tbody>
+    <Paper>
+      <Table component="table">
+        <TableHead>
+          <TableRow
+            sx={ {
+              '*': {
+                borderBottom: `1px solid ${palette.divider}`,
+              },
+            } }
+          >
+            <TableCell
+              variant="head"
+              sx={ {
+                display: { xs: 'none', md: DISPLAY_TABLE_CELL },
+                width: '50px',
+              } }
+            >
+              Item
+            </TableCell>
+            <TableCell variant="head" sx={ { width: '100px' } }>
+              Nome
+            </TableCell>
+            <TableCell variant="head" sx={ { width: '100px' } }>
+              E-mail
+            </TableCell>
+            <TableCell variant="head" sx={ { width: '100px' } }>
+              Tipo
+            </TableCell>
+            <TableCell variant="head" sx={ { width: '100px' } }>
+              Excluir
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {users?.map((user, index) => (
             <UserDetailsListItem key={ user.id } index={ index } { ...user } />
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </Paper>
   );
 }
 
