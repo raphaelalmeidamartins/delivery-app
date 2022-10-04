@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,6 +10,8 @@ import React from 'react';
 import InputNumber from './InputNumber';
 
 function ProductCard({ price, thumbnail, name, id }) {
+  const { palette } = useTheme();
+
   return (
     <Card sx={ { height: '100%', width: '100%', position: 'relative' } }>
       <CardMedia
@@ -24,7 +27,12 @@ function ProductCard({ price, thumbnail, name, id }) {
           objectFit: 'contain',
         } }
       />
-      <CardContent sx={ { backgroundColor: 'lightgray' } }>
+      <CardContent
+        sx={ {
+          backgroundColor: palette.productCard.main,
+          color: palette.productCard.contrastText,
+        } }
+      >
         <Typography
           gutterBottom
           align="center"
@@ -39,6 +47,8 @@ function ProductCard({ price, thumbnail, name, id }) {
           data-testid={ `customer_products__element-card-price-${id}` }
           label={ `R$ ${price.toFixed(2).replace('.', ',')}` }
           sx={ {
+            backgroundColor: palette.chip.main,
+            color: palette.chip.contrastText,
             borderRadius: '8px',
             fontSize: '24px',
             fontWeight: '550',

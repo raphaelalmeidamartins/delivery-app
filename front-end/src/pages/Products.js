@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { StatusCodes } from 'http-status-codes';
@@ -12,6 +13,7 @@ import service from '../service';
 function Products() {
   const { products, setProducts, cart } = useContext(AppContext);
   const [errMsg, setErrMsg] = useState('');
+  const { palette } = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +55,7 @@ function Products() {
           position: 'fixed',
           right: '24px',
           zIndex: 10,
+          backgroundColor: palette.secondary.main,
         } }
       >
         Ver Carrinho:
