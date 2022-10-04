@@ -25,18 +25,26 @@ function OrderDetailsListTable({ editable, orderItems }) {
             >
               Item
             </TableCell>
-            <TableCell variant="head">Descrição</TableCell>
-            <TableCell variant="head" sx={ { width: '80px' } }>
+            <TableCell variant="head" sx={ { width: '100px' } }>
+              Descrição
+            </TableCell>
+            <TableCell
+              variant="head"
+              sx={ {
+                width: '50px',
+                display: { xs: 'none', md: DISPLAY_TABLE_CELL },
+              } }
+            >
               Quantidade
             </TableCell>
             <TableCell
               variant="head"
               sx={ {
                 display: { xs: 'none', md: DISPLAY_TABLE_CELL },
-                width: '120px',
+                width: '80px',
               } }
             >
-              Valor Unitário
+              Preço
             </TableCell>
             <TableCell
               variant="head"

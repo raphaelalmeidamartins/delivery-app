@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
@@ -49,9 +50,13 @@ function Orders() {
   return (
     <Wrapper>
       <Header />
-      {/* Quando o back-end estiver pronto, dar map nos pedidos retornados pela API */}
       {!!errMsg && <p>{errMsg}</p>}
-      {!errMsg
+      <Grid
+        container
+        spacing={ { xs: 4, sm: 4, md: 4 } }
+        columns={ { xs: 4, sm: 8, md: 12 } }
+      >
+        {!errMsg
           && sales.map(
             ({
               id,
@@ -61,17 +66,19 @@ function Orders() {
               deliveryAddress,
               deliveryNumber,
             }) => (
-              <OrderCard
-                key={ id }
-                id={ id }
-                testId={ id }
-                status={ status }
-                date={ formatDateFromBank(saleDate) }
-                totalPrice={ Number(totalPrice) }
-                fullAddress={ `${deliveryAddress}, ${deliveryNumber}` }
-              />
+              <Grid item key={ id } xs={ 4 } sm={ 8 } md={ 6 }>
+                <OrderCard
+                  id={ id }
+                  testId={ id }
+                  status={ status }
+                  date={ formatDateFromBank(saleDate) }
+                  totalPrice={ Number(totalPrice) }
+                  fullAddress={ `${deliveryAddress}, ${deliveryNumber}` }
+                />
+              </Grid>
             ),
           )}
+      </Grid>
     </Wrapper>
   );
 }
