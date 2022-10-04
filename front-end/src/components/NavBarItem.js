@@ -1,4 +1,4 @@
-import { MenuItem, SvgIcon } from '@mui/material';
+import { MenuItem, SvgIcon, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -6,6 +6,8 @@ import { FaBeer } from 'react-icons/fa';
 import { RiShoppingBagFill } from 'react-icons/ri';
 
 function NavBarItem({ name, path, testId, onClick, button }) {
+  const { palette } = useTheme();
+
   const icons = {
     Produtos: (
       <SvgIcon sx={ { marginRight: '8px' } }>
@@ -33,7 +35,7 @@ function NavBarItem({ name, path, testId, onClick, button }) {
           type="button"
           data-testid={ testId }
           onClick={ () => onClick(path) }
-          sx={ { color: 'white' } }
+          sx={ { color: palette.primary.contrastText } }
         >
           {icons[name]}
           {name}

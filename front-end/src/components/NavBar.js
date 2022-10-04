@@ -1,5 +1,6 @@
 import Logout from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -13,6 +14,7 @@ import NavBarItem from './NavBarItem';
 
 function NavBar() {
   const { userData, setUserData } = useContext(AppContext);
+  const { palette } = useTheme();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -71,7 +73,9 @@ function NavBar() {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={ handleOpenNavMenu }
-            color="inherit"
+            sx={ {
+              color: palette.primary.contrastText,
+            } }
           >
             <MenuIcon />
           </IconButton>
@@ -94,25 +98,25 @@ function NavBar() {
             } }
           >
             {userData?.role
-                && paths[userData.role].map((data) => (
-                  <NavBarItem
-                    key={ data.testId }
-                    { ...data }
-                    onClick={ handleCloseNavMenu }
-                  />
-                ))}
-          </Menu>
-        </Box>
-        <Box sx={ { flexGrow: 1, display: { xs: 'none', md: 'flex' } } }>
-          {userData?.role
               && paths[userData.role].map((data) => (
                 <NavBarItem
                   key={ data.testId }
                   { ...data }
                   onClick={ handleCloseNavMenu }
-                  button
                 />
               ))}
+          </Menu>
+        </Box>
+        <Box sx={ { flexGrow: 1, display: { xs: 'none', md: 'flex' } } }>
+          {userData?.role
+            && paths[userData.role].map((data) => (
+              <NavBarItem
+                key={ data.testId }
+                { ...data }
+                onClick={ handleCloseNavMenu }
+                button
+              />
+            ))}
         </Box>
         <Box sx={ { flexGrow: 0, alignItems: 'center', display: 'flex' } }>
           <Typography
@@ -126,7 +130,11 @@ function NavBar() {
             data-testid="customer_products__element-navbar-link-logout"
             size="large"
             onClick={ handleLogout }
-            sx={ { marginLeft: '20px', p: 0 } }
+            sx={ {
+              marginLeft: '20px',
+              p: 0,
+              color: palette.primary.contrastText,
+            } }
           >
             <Logout />
           </IconButton>
