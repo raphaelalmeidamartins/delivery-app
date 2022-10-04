@@ -68,7 +68,7 @@ function InputNumber({ product, id }) {
         data-testid={ `customer_products__button-card-rm-item-${id}` }
         type="button"
         onClick={ handleDecrement }
-        sx={ { border: '1px solid black', borderRadius: '12px 0 0 12px' } }
+        sx={ { border: '1px solid black', borderRadius: '6px 0 0 6px' } }
       >
         <AiOutlineMinus />
       </IconButton>
@@ -83,7 +83,7 @@ function InputNumber({ product, id }) {
         data-testid={ `customer_products__button-card-add-item-${id}` }
         type="button"
         onClick={ handleIncrement }
-        sx={ { border: '1px solid black', borderRadius: '0 12px 12px 0' } }
+        sx={ { border: '1px solid black', borderRadius: '0 6px 6px 0' } }
       >
         <AiOutlinePlus />
       </IconButton>
