@@ -10,7 +10,7 @@ import OrderStatus from './OrderStatus';
 
 function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
   const { userData } = useContext(AppContext);
-  const theme = useTheme();
+  const { palette, typography } = useTheme();
   const FOUR_NEGATIVE = -4;
 
   const navigate = useNavigate();
@@ -30,13 +30,13 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
       sx={ {
         borderRadius: '4px',
         border: 'unset',
-        backgroundColor: 'lightyellow',
+        backgroundColor: palette.background.paper,
         cursor: 'pointer',
         display: 'flex',
-        padding: '14px',
+        padding: '16px',
         width: '100%',
         height: '100%',
-        ...theme.typography.body1,
+        ...typography.body1,
       } }
     >
       <Grid
@@ -54,12 +54,12 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
         >
           <Box
             sx={ {
+              backgroundColor: palette.chip.main,
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '8px',
               display: 'flex',
               flexFlow: 'column nowrap',
-              backgroundColor: 'white',
               padding: '8px',
               height: '80px',
             } }
@@ -85,8 +85,7 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
             <span
               data-testid={ `${userData.role}_orders__element-order-date-${testId}` }
               style={ {
-                border: '1px solid lightgray',
-                backgroundColor: 'white',
+                backgroundColor: palette.divider,
                 borderRadius: '8px',
                 display: 'flex',
                 padding: '8px 14px',
@@ -98,8 +97,7 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
             <span
               data-testid={ `${userData.role}_orders__element-card-price-${testId}` }
               style={ {
-                border: '1px solid lightgray',
-                backgroundColor: 'white',
+                backgroundColor: palette.divider,
                 borderRadius: '8px',
                 display: 'flex',
                 padding: '8px 14px',
@@ -110,9 +108,15 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
             </span>
           </Box>
         </Grid>
-        <Grid item xs={ 12 } sm={ 12 } md={ 12 }>
-          {userData.role === 'seller' && fullAddress && (
-            <Box sx={ { display: 'flex', justifyContent: 'flex-end', width: '100%' } }>
+        {userData.role === 'seller' && fullAddress && (
+          <Grid item xs={ 12 } sm={ 12 } md={ 12 }>
+            <Box
+              sx={ {
+                display: 'flex',
+                justifyContent: 'flex-end',
+                width: '100%',
+              } }
+            >
               <span
                 data-testid={ `${userData.role}_orders__element-card-address-${testId}` }
                 style={ {
@@ -124,8 +128,8 @@ function OrderCard({ id, status, date, totalPrice, testId, fullAddress }) {
                 {fullAddress}
               </span>
             </Box>
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Grid>
     </Paper>
   );
