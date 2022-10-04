@@ -1,4 +1,4 @@
-import { Button, Paper, Typography, useTheme } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
 import { RiShoppingBagFill } from 'react-icons/ri';
@@ -12,7 +12,6 @@ import service from '../service';
 
 function OrderDetails() {
   const { userData } = useContext(AppContext);
-  const { typography } = useTheme();
   const { id } = useParams();
   const [sale, setSale] = useState({});
   const [errMsg, setErrMsg] = useState('');
