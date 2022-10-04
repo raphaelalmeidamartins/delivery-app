@@ -1,4 +1,5 @@
 import Delete from '@mui/icons-material/Delete';
+import { useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
@@ -8,6 +9,7 @@ import { AppContext } from '../context';
 
 function OrderDetailsListItem({ index, name, price, quantity, id, editable }) {
   const { cart, setCart, userData } = useContext(AppContext);
+  const { palette } = useTheme();
 
   const page = editable ? 'checkout' : 'order_details';
 
@@ -22,21 +24,21 @@ function OrderDetailsListItem({ index, name, price, quantity, id, editable }) {
         data-testid={
           `${userData.role}_${page}__element-order-table-item-number-${index}`
         }
-        sx={ { backgroundColor: 'lightgray', display: { xs: 'none', md: 'table-cell' } } }
+        sx={ {
+          backgroundColor: palette.secondary.main,
+          color: palette.secondary.contrastText,
+          display: { xs: 'none', md: 'table-cell' },
+        } }
       >
         {index + 1}
       </TableCell>
       <TableCell
-        data-testid={
-          `${userData.role}_${page}__element-order-table-name-${index}`
-        }
+        data-testid={ `${userData.role}_${page}__element-order-table-name-${index}` }
       >
         {name}
       </TableCell>
       <TableCell
-        data-testid={
-          `${userData.role}_${page}__element-order-table-quantity-${index}`
-        }
+        data-testid={ `${userData.role}_${page}__element-order-table-quantity-${index}` }
       >
         {quantity}
       </TableCell>
@@ -55,9 +57,7 @@ function OrderDetailsListItem({ index, name, price, quantity, id, editable }) {
       </TableCell>
       {editable && (
         <TableCell
-          data-testid={
-            `${userData.role}_${page}__element-order-table-remove-${index}`
-          }
+          data-testid={ `${userData.role}_${page}__element-order-table-remove-${index}` }
           align="center"
         >
           <IconButton

@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,12 +11,19 @@ import OrderDetailsListItem from './OrderDetailsListItem';
 
 function OrderDetailsListTable({ editable, orderItems }) {
   const DISPLAY_TABLE_CELL = 'table-cell';
+  const { palette } = useTheme();
 
   return (
     <Paper>
-      <Table component="table" stickyHeader>
+      <Table component="table">
         <TableHead>
-          <TableRow sx={ { '*': { borderBottom: '1px solid gray' } } }>
+          <TableRow
+            sx={ {
+              '*': {
+                borderBottom: `1px solid ${palette.divider}`,
+              },
+            } }
+          >
             <TableCell
               variant="head"
               sx={ {

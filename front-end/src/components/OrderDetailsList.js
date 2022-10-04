@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -9,13 +10,14 @@ import OrderDetailsListTable from './OrderDetailsListTable';
 function OrderDetailsList({ editable, orderItems }) {
   const { userData } = useContext(AppContext);
   const page = editable ? 'checkout' : 'order_details';
+  const { palette } = useTheme();
 
   return (
     <Box>
       <OrderDetailsListTable editable={ editable } orderItems={ orderItems } />
       <Paper
         sx={ {
-          borderTop: '1px solid gray',
+          borderTop: `1px solid ${palette.divider}`,
           alignItems: 'flex-start',
           display: 'flex',
           justifyContent: 'center',
