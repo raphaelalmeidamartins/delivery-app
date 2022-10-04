@@ -1,14 +1,18 @@
+import { Button, Paper, Typography, useTheme } from '@mui/material';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
+import { RiShoppingBagFill } from 'react-icons/ri';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import OrderDetailsList from '../components/OrderDetailsList';
+import OrderStatus from '../components/OrderStatus';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import service from '../service';
 
 function OrderDetails() {
   const { userData } = useContext(AppContext);
+  const { typography } = useTheme();
   const { id } = useParams();
   const [sale, setSale] = useState({});
   const [errMsg, setErrMsg] = useState('');
@@ -68,14 +72,36 @@ function OrderDetails() {
       {!errMsg && !!Object.keys(sale).length && (
         <>
           <section>
-            <h2>Detalhe do Pedido</h2>
-            <div>
+            <Typography component="h2" variant="h4" gutterBottom>
+              <RiShoppingBagFill />
+              {' '}
+              Detalhe do Pedido
+            </Typography>
+            <Paper
+              elevation={ 0 }
+              sx={ {
+                alignItems: 'center',
+                marginBottom: '24px',
+                padding: '14px 20px',
+                borderRadius: '8px',
+                '*:not(:last-child)': {
+                  marginRight: '14px',
+                },
+                display: 'flex',
+                flexFlow: 'row wrap',
+              } }
+            >
               <span
                 data-testid={
                   `${role}_order_details__element-order-details-label-order-id`
                 }
+                sx={ { marginRight: '30px' } }
               >
-                {`Pedido ${`0000${id}`.slice(FOUR_NEGATIVE)}`}
+                <span>Pedido</span>
+                {' '}
+                <span style={ { fontWeight: 700, fontSize: '20px' } }>
+                  {`${`0000${id}`.slice(FOUR_NEGATIVE)}`}
+                </span>
               </span>
               {role === 'customer'
                 && (
@@ -85,6 +111,7 @@ function OrderDetails() {
                     }
                   >
                     P. Vend:
+                    {' '}
                     {sale.seller.name}
                   </span>
                 )}
@@ -95,52 +122,60 @@ function OrderDetails() {
               >
                 {formatDateFromBank(sale.saleDate)}
               </span>
-              <span
-                data-testid={
-                  `${role}_order_details__element-order-details-label-delivery-status`
-                }
-              >
-                {sale.status}
-              </span>
+              <OrderStatus
+                status={ sale.status }
+                testId={ 0 }
+                sx={ {
+                  borderRadius: '4px',
+                  width: '220px',
+                  height: '36.5px',
+                } }
+              />
               {role === 'customer'
                 && (
-                  <button
+                  <Button
                     data-testid={
                       `${role}_order_details__button-delivery-check`
                     }
+                    variant="contained"
+                    color="success"
                     type="button"
                     disabled={ !sale.status.includes('Em Trânsito') }
                     onClick={ () => handleUpdateStatus('Entregue') }
                   >
                     MARCAR COMO ENTREGUE
-                  </button>
+                  </Button>
                 )}
               {role === 'seller'
                 && (
-                  <div>
-                    <button
+                  <>
+                    <Button
                       data-testid={
                         `${role}_order_details__button-preparing-check`
                       }
+                      variant="contained"
+                      color="warning"
                       type="button"
                       disabled={ !sale.status.includes('Pendente') }
                       onClick={ () => handleUpdateStatus('Preparando') }
                     >
                       PREPARAR PEDIDO
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       data-testid={
                         `${role}_order_details__button-dispatch-check`
                       }
+                      variant="contained"
                       type="button"
+                      color="success"
                       disabled={ !sale.status.includes('Preparando') }
                       onClick={ () => handleUpdateStatus('Em Trânsito') }
                     >
                       SAIU PARA ENTREGA
-                    </button>
-                  </div>
+                    </Button>
+                  </>
                 )}
-            </div>
+            </Paper>
           </section>
           <OrderDetailsList orderItems={ items } />
         </>

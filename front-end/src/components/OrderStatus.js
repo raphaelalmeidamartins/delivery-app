@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { AppContext } from '../context';
 
-function OrderStatus({ status, testId }) {
+function OrderStatus({ status, testId, sx }) {
   const { userData } = useContext(AppContext);
   const theme = useTheme();
 
@@ -31,6 +31,7 @@ function OrderStatus({ status, testId }) {
         alignItems: 'center',
         justifyContent: 'center',
         ...theme.typography.h6,
+        ...sx,
       } }
       data-testid={ `${userData.role}_orders__element-delivery-status-${testId}` }
     >
@@ -39,10 +40,15 @@ function OrderStatus({ status, testId }) {
   );
 }
 
+OrderStatus.defaultProps = {
+  sx: {},
+};
+
 OrderStatus.propTypes = {
   testId: PropTypes.number.isRequired,
   status: PropTypes.oneOf(['Pendente', 'Preparando', 'Em Trânsito', 'Entregue'])
     .isRequired,
+  sx: PropTypes.objectOf(PropTypes.string),
 };
 
 export default OrderStatus;
