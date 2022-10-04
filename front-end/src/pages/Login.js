@@ -3,9 +3,11 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/system';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/images/logo.svg';
 import Wrapper from '../components/Wrapper';
 import { AppContext } from '../context';
 import handleUserValidation from '../helpers/handleUserValidation';
@@ -17,6 +19,7 @@ function Login() {
   const [errMsg, setErrMsg] = useState('');
 
   const { setUserData } = useContext(AppContext);
+  const { palette } = useTheme();
 
   const handleChange = ({ target: { name, value } }) => {
     const loginValues = {
@@ -54,25 +57,39 @@ function Login() {
     navigate('/register', { replace: true });
   };
 
+  const INPUT_SPACING = '24px';
+
   return (
-    <Wrapper>
+    <Wrapper
+      sx={ {
+        paddingTop: 'unset',
+        paddingBottom: 'unset',
+      } }
+      bgSx={ {
+        backgroundColor: palette.background.login,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      } }
+    >
       <Box
         component="form"
         onSubmit={ handleSubmit }
         sx={ {
-          border: '1px solid black',
           display: 'flex',
           flexFlow: 'column nowrap',
           maxWidth: '600px',
           margin: 'auto',
         } }
       >
-        <Typography component="h1" variant="h2" gutterBottom>
-          Login
-        </Typography>
-        <FormControl>
+        <img
+          src={ logo }
+          alt="Boteco da Dona Menina"
+          style={ { maxWidth: '500px', margin: '0 auto' } }
+        />
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Login"
             required
             type="email"
@@ -83,9 +100,9 @@ function Login() {
             inputProps={ { 'data-testid': 'common_login__input-email' } }
           />
         </FormControl>
-        <FormControl>
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Senha"
             required
             type="password"
@@ -104,6 +121,7 @@ function Login() {
           disabled={ handleUserValidation(email, password) }
           data-testid="common_login__button-login"
           onSubmit={ handleSubmit }
+          sx={ { marginBottom: INPUT_SPACING } }
         >
           LOGIN
         </Button>

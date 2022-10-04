@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -18,6 +19,7 @@ function Register() {
   const [errMsg, setErrMsg] = useState('');
 
   const { setUserData } = useContext(AppContext);
+  const { palette } = useTheme();
 
   const handleChange = ({ target: { name, value } }) => {
     const loginValues = {
@@ -53,15 +55,37 @@ function Register() {
     }
   };
 
+  const INPUT_SPACING = '24px';
+
   return (
-    <Wrapper>
-      <Box component="form" onSubmit={ handleSubmit }>
-        <Typography component="h1" variant="h2" gutterBottom>
-          Register
+    <Wrapper
+      sx={ {
+        paddingTop: 'unset',
+        paddingBottom: 'unset',
+      } }
+      bgSx={ {
+        backgroundColor: palette.background.login,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      } }
+    >
+      <Box
+        component="form"
+        onSubmit={ handleSubmit }
+        sx={ {
+          display: 'flex',
+          flexFlow: 'column nowrap',
+          maxWidth: '600px',
+          margin: 'auto',
+        } }
+      >
+        <Typography component="h1" variant="h3" gutterBottom>
+          Criar conta
         </Typography>
-        <FormControl>
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Nome"
             required
             type="text"
@@ -72,9 +96,9 @@ function Register() {
             inputProps={ { 'data-testid': 'common_register__input-name' } }
           />
         </FormControl>
-        <FormControl>
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Login"
             required
             type="email"
@@ -85,9 +109,9 @@ function Register() {
             inputProps={ { 'data-testid': 'common_register__input-email' } }
           />
         </FormControl>
-        <FormControl>
+        <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
-            variant="filled"
+            variant="outlined"
             label="Senha"
             required
             type="password"
