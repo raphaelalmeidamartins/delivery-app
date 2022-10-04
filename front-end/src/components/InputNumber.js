@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
@@ -6,6 +7,7 @@ import { AppContext } from '../context';
 
 function InputNumber({ product, id }) {
   const { cart, setCart } = useContext(AppContext);
+  const { palette } = useTheme();
 
   const getItemQuantity = (arrayCart) => {
     const cartItem = arrayCart.find((item) => item.id === id);
@@ -68,7 +70,14 @@ function InputNumber({ product, id }) {
         data-testid={ `customer_products__button-card-rm-item-${id}` }
         type="button"
         onClick={ handleDecrement }
-        sx={ { border: '1px solid black', borderRadius: '6px 0 0 6px' } }
+        sx={ {
+          borderRadius: '6px 0 0 6px',
+          backgroundColor: palette.secondary.main,
+          color: palette.secondary.contrastText,
+          '&:hover': {
+            backgroundColor: palette.secondary.light,
+          },
+        } }
       >
         <AiOutlineMinus />
       </IconButton>
@@ -77,13 +86,26 @@ function InputNumber({ product, id }) {
         value={ quantityState }
         onChange={ handleChange }
         data-testid={ `customer_products__input-card-quantity-${id}` }
-        style={ { fontSize: '16px', textAlign: 'center', width: '80px' } }
+        style={ {
+          border: 'unset',
+          fontSize: '16px',
+          textAlign: 'center',
+          width: '80px',
+          backgroundColor: palette.background.default,
+        } }
       />
       <IconButton
         data-testid={ `customer_products__button-card-add-item-${id}` }
         type="button"
         onClick={ handleIncrement }
-        sx={ { border: '1px solid black', borderRadius: '0 6px 6px 0' } }
+        sx={ {
+          borderRadius: '0 6px 6px 0',
+          backgroundColor: palette.secondary.main,
+          color: palette.secondary.contrastText,
+          '&:hover': {
+            backgroundColor: palette.secondary.light,
+          },
+        } }
       >
         <AiOutlinePlus />
       </IconButton>
