@@ -1,4 +1,7 @@
-import Button from '@mui/material/Button';
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { AppContext } from '../context';
@@ -14,50 +17,65 @@ function OrderDetailsListItem({ index, name, price, quantity, id, editable }) {
   };
 
   return (
-    <tr>
-      <td
+    <TableRow>
+      <TableCell
         data-testid={
           `${userData.role}_${page}__element-order-table-item-number-${index}`
         }
+        sx={ { backgroundColor: 'lightgray', display: { xs: 'none', md: 'table-cell' } } }
       >
         {index + 1}
-      </td>
-      <td data-testid={ `${userData.role}_${page}__element-order-table-name-${index}` }>
+      </TableCell>
+      <TableCell
+        data-testid={
+          `${userData.role}_${page}__element-order-table-name-${index}`
+        }
+      >
         {name}
-      </td>
-      <td
-        data-testid={ `${userData.role}_${page}__element-order-table-quantity-${index}` }
+      </TableCell>
+      <TableCell
+        data-testid={
+          `${userData.role}_${page}__element-order-table-quantity-${index}`
+        }
       >
         {quantity}
-      </td>
-      <td
+      </TableCell>
+      <TableCell
         data-testid={
           `${userData.role}_${page}__element-order-table-unit-price-${index}`
         }
+        sx={ { display: { xs: 'none', md: 'table-cell' } } }
       >
         {`R$ ${price.toFixed(2).replace('.', ',')}`}
-      </td>
-      <td
+      </TableCell>
+      <TableCell
         data-testid={ `${userData.role}_${page}__element-order-table-sub-total-${index}` }
       >
         {`R$ ${(quantity * price).toFixed(2).replace('.', ',')}`}
-      </td>
+      </TableCell>
       {editable && (
-        <td
-          data-testid={ `${userData.role}_${page}__element-order-table-remove-${index}` }
+        <TableCell
+          data-testid={
+            `${userData.role}_${page}__element-order-table-remove-${index}`
+          }
+          align="center"
         >
-          <Button
-            type="button"
+          <IconButton
+            size="large"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
             onClick={ handleRemoveItem }
+            color="inherit"
             data-testid={
               `${userData.role}_${page}__element-order-table-remove-${index}`
             }
+            title="Remover item"
           >
-            Remover
-          </Button>
-        </td>
+            <Delete />
+          </IconButton>
+        </TableCell>
       )}
-    </tr>
+    </TableRow>
   );
 }
 

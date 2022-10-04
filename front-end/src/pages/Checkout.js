@@ -1,10 +1,11 @@
-import Box from '@mui/material/Box';
+import { Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { StatusCodes } from 'http-status-codes';
 import React, { useContext, useEffect, useState } from 'react';
+import { MdShoppingCart, MdSportsMotorsports } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import OrderDetailsList from '../components/OrderDetailsList';
@@ -74,89 +75,119 @@ function Checkout() {
     }
   };
 
+  const INPUT_SPACING = '24px';
+
   return (
-    <>
+    <Wrapper>
       <Header />
-      <Wrapper>
-        {!!errMsg && <p>{errMsg}</p>}
-        {!errMsg && !cart.length && (
-          <Typography variant="h6" align="center" paragraph>
-            Seu carrinho está vazio
-          </Typography>
-        )}
-        {!errMsg && !!cart.length && (
-          <>
-            <section>
-              <Typography component="h2" variant="h2" gutterBottom>
-                Finalizar pedido
-              </Typography>
-              <OrderDetailsList orderItems={ cart } editable />
-            </section>
-            <Box component="form" onSubmit={ handleSubmit }>
-              <Typography component="h2" variant="h2" gutterBottom>
-                Detalhes e Endereço para entrega
-              </Typography>
-              <FormControl>
-                <label htmlFor="seller-select">
-                  P. Vendedora Responsável
-                  <select
-                    id="seller-select"
-                    data-testid="customer_checkout__select-seller"
-                    name="seller"
-                    value={ seller }
-                    onChange={ handleChange }
-                  >
-                    {sellers?.map(({ id, name }) => (
-                      <option key={ id } value={ id }>
-                        {name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </FormControl>
-              <FormControl>
-                <TextField
-                  variant="filled"
-                  label="Endereço"
-                  required
-                  type="text"
-                  name="address"
-                  value={ address }
-                  onChange={ handleChange }
-                  inputProps={ {
-                    'data-testid': 'customer_checkout__input-address',
-                  } }
-                />
-              </FormControl>
-              <FormControl>
-                <TextField
-                  variant="filled"
-                  label="Número"
-                  required
-                  type="text"
-                  name="addressNumber"
-                  value={ addressNumber }
-                  onChange={ handleChange }
-                  inputProps={ {
-                    'data-testid': 'customer_checkout__input-address-number',
-                  } }
-                />
-              </FormControl>
-              <Button
-                component="button"
-                type="submit"
-                variant="outlined"
-                data-testid="customer_checkout__button-submit-order"
-                disabled={ !(address && addressNumber) }
-                onClick={ handleSubmit }
+      {!!errMsg && <p>{errMsg}</p>}
+      {!errMsg && !cart.length && (
+        <Typography variant="h6" align="center" paragraph>
+          Seu carrinho está vazio
+        </Typography>
+      )}
+      {!errMsg && !!cart.length && (
+        <Grid
+          container
+          spacing={ { xs: 5, sm: 5, md: 5 } }
+          columns={ { xs: 4, sm: 4, md: 12 } }
+          component="section"
+        >
+          <Grid item xs={ 4 } sm={ 4 } md={ 8 }>
+            <Typography component="h2" variant="h4" gutterBottom>
+              <MdShoppingCart />
+              {' '}
+              Finalizar pedido
+            </Typography>
+            <OrderDetailsList orderItems={ cart } editable />
+          </Grid>
+          <Grid
+            component="form"
+            onSubmit={ handleSubmit }
+            item
+            xs={ 4 }
+            sm={ 4 }
+            md={ 4 }
+            sx={ {
+              display: 'flex',
+              flexFlow: 'column nowrap',
+            } }
+          >
+            <Typography
+              component="h3"
+              variant="h4"
+              gutterBottom
+              sx={ { marginBottom: INPUT_SPACING } }
+            >
+              <MdSportsMotorsports />
+              {' '}
+              Detalhes
+            </Typography>
+            <FormControl sx={ { marginBottom: INPUT_SPACING } }>
+              <InputLabel id="seller-select-label">
+                P. Vendedora Responsável
+              </InputLabel>
+              <Select
+                id="seller-select"
+                name="seller"
+                labelId="seller-select-label"
+                value={ seller }
+                label="P. Vendedora Responsável"
+                onChange={ handleChange }
+                inputProps={ {
+                  'data-testid': 'customer_checkout__select-seller',
+                } }
               >
-                FINALIZAR PEDIDO
-              </Button>
-            </Box>
-          </>
-        )}
-      </Wrapper>
-    </>
+                {sellers?.map(({ id, name }) => (
+                  <MenuItem key={ id } value={ id }>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl sx={ { marginBottom: INPUT_SPACING } }>
+              <TextField
+                variant="outlined"
+                label="Endereço"
+                required
+                type="text"
+                name="address"
+                value={ address }
+                onChange={ handleChange }
+                inputProps={ {
+                  'data-testid': 'customer_checkout__input-address',
+                } }
+              />
+            </FormControl>
+            <FormControl sx={ { marginBottom: INPUT_SPACING } }>
+              <TextField
+                variant="outlined"
+                label="Número"
+                required
+                type="text"
+                name="addressNumber"
+                value={ addressNumber }
+                onChange={ handleChange }
+                inputProps={ {
+                  'data-testid': 'customer_checkout__input-address-number',
+                } }
+              />
+            </FormControl>
+            <Button
+              component="button"
+              type="submit"
+              variant="contained"
+              data-testid="customer_checkout__button-submit-order"
+              disabled={ !(address && addressNumber) }
+              onClick={ handleSubmit }
+              size="large"
+            >
+              FINALIZAR PEDIDO
+            </Button>
+          </Grid>
+        </Grid>
+      )}
+    </Wrapper>
   );
 }
 

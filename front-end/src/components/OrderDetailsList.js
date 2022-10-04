@@ -1,43 +1,47 @@
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
-import OrderDetailsListItem from './OrderDetailsListItem';
 import { AppContext } from '../context';
+import OrderDetailsListTable from './OrderDetailsListTable';
 
 function OrderDetailsList({ editable, orderItems }) {
   const { userData } = useContext(AppContext);
   const page = editable ? 'checkout' : 'order_details';
+
   return (
-    <div>
-      <table style={ { border: '1px solid black' } }>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Descrição</th>
-            <th>Quantidade</th>
-            <th>Valor Unitário</th>
-            <th>Sub-total</th>
-            {editable && <th>Remover item</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {/* Fazer um map nos itens do pedido */}
-          {orderItems?.map((item, index) => (
-            <OrderDetailsListItem
-              key={ item.id }
-              index={ index }
-              { ...item }
-              editable={ editable }
-            />
-          ))}
-        </tbody>
-      </table>
-      <span data-testid={ `${userData.role}_${page}__element-order-total-price` }>
-        {`R$ ${orderItems
-          ?.reduce((acc, { price, quantity }) => acc + price * quantity, 0)
-          .toFixed(2)
-          .replace('.', ',')}`}
-      </span>
-    </div>
+    <Box>
+      <OrderDetailsListTable editable={ editable } orderItems={ orderItems } />
+      <Paper
+        sx={ {
+          borderTop: '1px solid gray',
+          alignItems: 'flex-start',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '16px',
+        } }
+      >
+        <Typography variant="h6" component="span" sx={ { marginRight: '20px' } }>
+          Valor total:
+        </Typography>
+        <Box>
+          <Typography variant="h5" component="span" sx={ { marginRight: '20px' } }>
+            R$
+          </Typography>
+          <Typography
+            variant="h5"
+            component="span"
+            data-testid={ `${userData.role}_${page}__element-order-total-price` }
+          >
+            {`${orderItems
+              ?.reduce((acc, { price, quantity }) => acc + price * quantity, 0)
+              .toFixed(2)
+              .replace('.', ',')}`}
+          </Typography>
+        </Box>
+      </Paper>
+    </Box>
   );
 }
 
