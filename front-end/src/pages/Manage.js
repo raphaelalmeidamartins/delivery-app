@@ -132,13 +132,13 @@ function Manage() {
           />
         </FormControl>
         <FormControl sx={ { marginBottom: INPUT_SPACING } }>
-          <InputLabel id="seller-select-label">
-            P. Vendedora Responsável
+          <InputLabel id="role-select-label">
+            Tipo
           </InputLabel>
           <Select
-            id="seller-select"
-            name="seller"
-            labelId="seller-select-label"
+            id="role-select"
+            name="role"
+            labelId="role-select-label"
             value={ role }
             label="P. Vendedora Responsável"
             onChange={ handleChange }
