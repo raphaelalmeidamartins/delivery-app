@@ -85,7 +85,7 @@ function Login() {
         <img
           src={ logo }
           alt="Boteco da Dona Menina"
-          style={ { maxWidth: '500px', margin: '0 auto' } }
+          style={ { width: '100%', objectFit: 'contain', margin: '0 auto' } }
         />
         <FormControl sx={ { marginBottom: INPUT_SPACING } }>
           <TextField
