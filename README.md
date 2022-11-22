@@ -7,7 +7,7 @@
 <details>
   <summary markdown="span"><strong>:us: English</strong></summary><br />
 
-Full stack React/Node.js group project developed by [Raphael Martins](https://www.linkedin.com/in/raphaelameidamartins/), [Arthur Teixeira](https://github.com/TuzinF5), [Helder Medeiros](https://github.com/helderme), [Rômulo Rodrigues](https://github.com/romulo-rp29) and [Sophia Contesini](https://github.com/sophiacontesini) at the end of Unit 31 ([Back-end Development Module](https://github.com/raphaelalmeidamartins/trybe_exercicios/tree/main/3_Desenvolvimento-Back-end)) of Trybe's Web Development course. I was approved with 100% of the mandatory and optional requirements met.
+Full stack React/Node.js group project developed by [Raphael Martins](https://www.linkedin.com/in/raphaelameidamartins/), [Arthur Teixeira](https://github.com/TuzinF5), [Helder Medeiros](https://github.com/helderme), [Rômulo Rodrigues](https://github.com/romulo-rp29) and [Sophia Contesini](https://github.com/sophiacontesini) at the end of Unit 31 ([Back-end Development Module](https://github.com/raphaelalmeidamartins/trybe_exercicios/tree/main/3_Desenvolvimento-Back-end)) of Trybe's Web Development course. We got approved with 100% of the mandatory and optional requirements met.
 
 We had to develop both the Front-end and Back-end of a full stack application for a drink delivery app by using React, Node,js and Express.
 
@@ -18,7 +18,7 @@ We had to develop both the Front-end and Back-end of a full stack application fo
 <details>
   <summary markdown="span"><strong>:brazil: Português</strong></summary><br />
 
-Projeto full stack React/Node.js desenvolvido por [Raphael Martins](https://www.linkedin.com/in/raphaelameidamartins/), [Arthur Teixeira](https://github.com/TuzinF5), [Helder Medeiros](https://github.com/helderme), [Rômulo Rodrigues](https://github.com/romulo-rp29) e [Sophia Contesini](https://github.com/sophiacontesini) ao final do Bloco 31 ([Módulo Desenvolvimento Back-end](https://github.com/raphaelalmeidamartins/trybe_exercicios/tree/main/3_Desenvolvimento-Back-end)) do curso de Desenvolvimento Web da Trybe. Fui aprovado com 100% dos requisitos obrigatórios e opcionais atingidos.
+Projeto full stack React/Node.js desenvolvido por [Raphael Martins](https://www.linkedin.com/in/raphaelameidamartins/), [Arthur Teixeira](https://github.com/TuzinF5), [Helder Medeiros](https://github.com/helderme), [Rômulo Rodrigues](https://github.com/romulo-rp29) e [Sophia Contesini](https://github.com/sophiacontesini) ao final do Bloco 31 ([Módulo Desenvolvimento Back-end](https://github.com/raphaelalmeidamartins/trybe_exercicios/tree/main/3_Desenvolvimento-Back-end)) do curso de Desenvolvimento Web da Trybe. Fomos aprovado com 100% dos requisitos obrigatórios e opcionais atingidos.
 
 Tivemos que desenvolver tanto o Front-end, quanto o Back-end de uma aplicação full stack de aplicativo de entrega de bebidas. O front-end foi desenvolvido em React, enquanto o Back-end utiliza Node.js, Express.js e Sequelize.js.
 
